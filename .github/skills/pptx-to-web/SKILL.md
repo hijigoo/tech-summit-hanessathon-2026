@@ -14,6 +14,11 @@ PPTX를 GitHub Pages용 정적 HTML 덱으로 변환한다. 원본 룩앤필을 
 - `ffmpeg` (선택) — .mov 등 비호환 코덱을 mp4로 변환
 
 ## 사용법
+콘텐츠 기반(권장, 텍스트 선택가능·웹 네이티브):
+```bash
+python3 scripts/pptx2web_native.py <input.pptx> --out docs
+```
+이미지 기반(룩앤필 1:1 보존, 텍스트는 이미지):
 ```bash
 python3 scripts/pptx2web.py <input.pptx> --out docs --scale 2.0
 ```
@@ -25,6 +30,12 @@ python3 scripts/pptx2web.py <input.pptx> --out docs --scale 2.0
 2. python-pptx로 슬라이드 크기 + 영상 shape 비율좌표 추출.
 3. zip에서 영상/오디오 추출, 비호환 코덱은 ffmpeg로 mp4 변환.
 4. 슬라이드 = 이미지 배경 + 영상 위치에 `<video>` 절대배치 오버레이.
+
+## 동작 (native, 콘텐츠 기반)
+1. python-pptx로 텍스트런(폰트·크기·색·정렬), 그림, 표를 추출.
+2. EMU 좌표를 %로 환산해 absolute 배치, 폰트 크기는 `cqh`로 반응형.
+3. 그림은 blob 추출, 표는 `<table>`, 온라인 영상(YouTube)은 `<iframe>`.
+4. 텍스트가 실제 HTML이라 선택·검색·SEO·접근성 확보.
 
 ## GitHub Pages 배포
 - 출력 폴더를 `docs/`로 두고 Pages를 main /docs로 설정하거나,

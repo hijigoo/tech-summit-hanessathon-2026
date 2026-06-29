@@ -38,6 +38,24 @@ def render_pngs(pptx, outdir, scale):
         return n
 
 
+def online_videos(pptx):
+    """slide_index -> [embed urls] from external relationships (YouTube/Vimeo/etc)."""
+    import re
+    out = {}
+    with zipfile.ZipFile(pptx) as z:
+        for nm in z.namelist():
+            m = re.match(r"ppt/slides/_rels/slide(\d+)\.xml\.rels", nm)
+            if not m:
+                continue
+            idx = int(m.group(1)) - 1
+            data = z.read(nm).decode("utf8", "ignore")
+            urls = [u.replace("&amp;", "&") for u in re.findall(r'Target="([^"]+)"[^>]*External', data) if u.startswith("http")]
+            urls = [u for u in urls if any(k in u for k in ("youtube", "youtu.be", "vimeo", "embed", ".mp4", ".webm"))]
+            if urls:
+                out[idx] = urls
+    return out
+
+
 def media_overlays(pptx):
     from pptx import Presentation
     from pptx.enum.shapes import MSO_SHAPE_TYPE
@@ -48,8 +66,8 @@ def media_overlays(pptx):
         items = []
         for sh in s.shapes:
             if sh.shape_type == MSO_SHAPE_TYPE.MEDIA and None not in (sh.left, sh.top, sh.width, sh.height):
-                items.append({"left": sh.left/W*100, "top": sh.top/H*100,
-                              "width": sh.width/W*100, "height": sh.height/H*100,
+                items.append({"left": max(0, sh.left/W*100), "top": max(0, sh.top/H*100),
+                              "width": min(100, sh.width/W*100), "height": min(100, sh.height/H*100),
                               "name": sh.name})
         if items:
             by_slide[i] = items
