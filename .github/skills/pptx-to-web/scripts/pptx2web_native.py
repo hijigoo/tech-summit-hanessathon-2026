@@ -254,11 +254,14 @@ def slide_points(s):
     return title, pts
 
 
-def slide_pictures(s, media):
+def slide_pictures(s, media, W, H):
     out = []
     for sh in _walk(s.shapes):
         if sh.shape_type == MSO_SHAPE_TYPE.PICTURE:
             try:
+                wpct = (sh.width or 0) / W; hpct = (sh.height or 0) / H
+                if wpct < 0.22 or hpct < 0.18:   # skip small icons/logos
+                    continue
                 img = sh.image
                 name = f"img_{img.sha1[:10]}.{img.ext}"
                 (media/name).write_bytes(img.blob)
@@ -276,11 +279,12 @@ def build_reflow(pptx, out, scale, updates=None):
         f.unlink()
     nshot = render_pngs(pptx, media, scale)
     p = Presentation(pptx)
+    W, H = p.slide_width, p.slide_height
     onv = online_videos(pptx)
     cards = []
     for i, s in enumerate(p.slides):
         title, pts = slide_points(s)
-        imgs = slide_pictures(s, media)
+        imgs = slide_pictures(s, media, W, H)
         note = slide_notes(s)
         shot = f"media/slide-{i+1:03d}.png" if nshot else ""
         videos = onv.get(i, [])
