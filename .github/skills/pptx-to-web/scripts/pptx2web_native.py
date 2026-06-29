@@ -277,7 +277,6 @@ def build_reflow(pptx, out, scale, updates=None):
         d.mkdir(parents=True, exist_ok=True)
     for f in media.glob("*"):
         f.unlink()
-    nshot = render_pngs(pptx, media, scale)
     p = Presentation(pptx)
     W, H = p.slide_width, p.slide_height
     onv = online_videos(pptx)
@@ -286,17 +285,16 @@ def build_reflow(pptx, out, scale, updates=None):
         title, pts = slide_points(s)
         imgs = slide_pictures(s, media, W, H)
         note = slide_notes(s)
-        shot = f"media/slide-{i+1:03d}.png" if nshot else ""
         videos = onv.get(i, [])
-        # never leave a slide empty: borrow notes as body, then fall back to the rendered slide image
         body = bool(pts or imgs or videos)
-        if not body and note:
+        if not body and note:   # promote notes into readable bullets
             pts = [ln.strip() for ln in re.split(r"[\n•·]|(?<=[.!?])\s", note) if len(ln.strip()) > 4]
             body = bool(pts)
-        if not body and shot:
-            imgs = [shot]; body = True
-        cards.append({"n": i+1, "title": title or f"슬라이드 {i+1}", "points": pts,
-                      "note": note, "imgs": imgs, "videos": videos})
+        c = {"n": i+1, "title": title or "", "points": pts, "note": note, "imgs": imgs, "videos": videos}
+        if not body:   # section divider: reinterpret as a clean HTML hero, never a screenshot
+            c["divider"] = True
+            c["title"] = title or Path(pptx).stem
+        cards.append(c)
     titles = [c["title"][:40] for c in cards]
     us, ut, _ = update_slides(updates)
     for h, t in zip(us, ut):
@@ -305,7 +303,7 @@ def build_reflow(pptx, out, scale, updates=None):
     deck = {"title": Path(pptx).stem, "cards": cards, "titles": titles}
     (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
     (out/"index.html").write_text(REFLOW.replace("__DECK__", json.dumps(deck, ensure_ascii=False)))
-    empties = [c["n"] for c in cards if not (c.get("html") or c["points"] or c["imgs"] or c["videos"])]
+    empties = [c["n"] for c in cards if not (c.get("html") or c.get("divider") or c["points"] or c["imgs"] or c["videos"])]
     if empties:
         print(f"WARN: empty slides: {empties}", file=sys.stderr)
     return len(cards), sum(len(c["videos"]) for c in cards)
@@ -344,6 +342,9 @@ li::before{content:"";position:absolute;left:0;top:21px;width:12px;height:12px;b
 .note.empty{display:none}.solo .shot{max-width:780px;margin:0 auto}
 .html{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:24px 28px}
 .html p{font-size:clamp(16px,1.7vw,22px);line-height:1.55;margin:.25em 0}
+section.divider{min-height:92vh;align-items:center}
+.dvr{text-align:center}.dvr span{font-family:Sora;letter-spacing:.35em;font-size:14px;color:#7f8db0}
+.dvr h2{font-family:Sora,'Noto Sans KR';font-size:clamp(40px,7vw,90px);font-weight:800;margin:.2em 0 0;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
 @media(max-width:860px){.row{grid-template-columns:1fr}#side{width:62px;flex-basis:62px}#side h1,#side a span{display:none}#prog{left:62px}}
 </style></head><body>
 <div id="bg"></div><div id="prog"></div>
@@ -354,13 +355,15 @@ const D=__DECK__;
 const TH=[['#22d3ee','#7b2ff7'],['#ff5ea0','#7b2ff7'],['#3bb78f','#22d3ee'],['#ff8a00','#ff5ea0'],['#22d3ee','#3bb78f'],['#a6ed5d','#22d3ee']];
 dt.textContent=D.title;scrollEl=document.getElementById('scroll');toc=document.getElementById('toc');
 D.cards.forEach((c,i)=>{const t=TH[i%TH.length];let body;
+  if(c.divider){scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" class="divider" style="--a:'+t[0]+';--b:'+t[1]+'"><div class="dvr"><span>SECTION</span><h2>'+(c.title||'').replace(/</g,'&lt;')+'</h2></div></section>');
+    toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+((D.titles[i]||'섹션')).replace(/</g,'&lt;')+'</span></a>');return;}
   if(c.html){body='<div class="html">'+c.html+'</div>';}
   else{const pts=c.points.map((x,k)=>'<li>'+x.replace(/</g,'&lt;')+'</li>').join('');
     const vis=c.videos&&c.videos.length?'<div class="vid"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.imgs&&c.imgs.length?'<div class="shot">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');
     const solo=pts?'':' solo';body='<div class="row'+solo+'">'+(pts?'<ul>'+pts+'</ul>':'')+vis+'</div>';}
   scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" style="--a:'+t[0]+';--b:'+t[1]+'"><h2 class="t">'+(c.title||'').replace(/</g,'&lt;')+'</h2>'+body+'</section>');
   const sec=scrollEl.lastElementChild;const nd=document.createElement('div');nd.className='note'+(c.note?'':' empty');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=c.note||'';nd.appendChild(sp);sec.appendChild(nd);
-  toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+(D.titles[i]||'')+'</span></a>');});
+  toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+((D.titles[i]||'섹션')).replace(/</g,'&lt;')+'</span></a>');});
 const links=[...toc.querySelectorAll('a')],prog=document.getElementById('prog');
 const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=links[+e.target.id.slice(1)];a.classList.add('on');a.scrollIntoView({block:'nearest'});}}),{root:scrollEl,threshold:.4});
 document.querySelectorAll('section').forEach(s=>ob.observe(s));
