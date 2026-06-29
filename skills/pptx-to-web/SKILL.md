@@ -1,6 +1,6 @@
 ---
 name: pptx-to-web
-description: Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — reinterprets each slide's title/key-points/images/notes into web-native explanation slides (screenshots used only for interpretation, NOT embedded; variable height, not pixel-for-pixel), with left sidebar TOC, vertical scroll, images, tables, embedded/YouTube videos, speaker notes below each slide — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN: "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "장표 재해석", "발표 스크립트", "발표자 노트", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".
+description: 'Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — reinterprets each slide title/key-points/images/notes into web-native explanation slides (screenshots used only for interpretation, NOT embedded; variable height, not pixel-for-pixel), with left sidebar TOC, vertical scroll, images, tables, embedded/YouTube videos, speaker notes below each slide — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN — "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "장표 재해석", "발표 스크립트", "발표자 노트", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".'
 ---
 
 # pptx-to-web
