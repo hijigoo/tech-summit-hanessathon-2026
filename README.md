@@ -1,6 +1,6 @@
 # pptx-to-web — 멈춰있는 PPTX를 "항상 최신인 라이브 웹 데모"로 바꾸는 Copilot 스킬
 
-> 하네스톤 2026 · **트랙2** · 제출물: **Copilot Skill** (`.github/skills/pptx-to-web/`)
+> 하네스톤 2026 · **트랙2** · 제출물: **Copilot Skill** (`pptx-to-web/`)
 
 **PPT는 만드는 순간 낡습니다.** 자료를 고치려면 파일 열고, 다시 export하고, 메일에 첨부하고, 버전이 엉킵니다.
 `pptx-to-web`은 PPTX를 **웹으로 바꿔** GitHub Copilot에게 한마디만 하면 **최신 정보로 갱신**되고, 고객에겐 **URL 하나로 즉시 전달**됩니다.
@@ -43,7 +43,7 @@
 
 ## 사용
 ```bash
-S=.github/skills/pptx-to-web
+S=pptx-to-web
 pip install -r $S/scripts/requirements.txt
 python3 $S/scripts/capture.py deck.pptx --out /tmp/shots
 python3 $S/scripts/pptx2web_native.py --content content.json --updates docs/updates.json --out docs

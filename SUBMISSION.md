@@ -16,7 +16,7 @@ PowerPoint 발표 자료를 웹 버전으로 만들어, 최신 정보를 GitHub 
 - **유지보수 제로**: "이 수치 바꿔줘"만으로 사이트가 갱신·재배포
 
 ### Harness Asset 유형 / 목적
-- 유형: **GitHub Copilot Skill** (`.github/skills/pptx-to-web/`)
+- 유형: **GitHub Copilot Skill** (`pptx-to-web/`)
 - 목적: PPTX → 다이어그램 중심 웹 덱 자동 생성, 최신 정보 반영, 고객에게 URL로 즉시 전달
 
 ### 주요 기능
