@@ -17,6 +17,7 @@ python3 scripts/capture.py deck.pptx --out /tmp/shots   # ① PNG 캡처
 #   ② /tmp/shots/s01..png 를 view로 보고 content.json 작성(templates/ 참고)
 python3 scripts/fetch_updates.py --out docs/updates.json                       # ③ 최신 업데이트
 python3 scripts/pptx2web_native.py --content content.json --updates docs/updates.json --out docs  # ④ 빌드
+cd docs && python3 -m http.server 8765 &                                          # ⑤ 로컬 서버
 cd /tmp && npm i playwright && node <skill>/scripts/verify.js http://localhost:8765/             # ⑤ 검증
 git add docs && git commit && git push                                          # ⑥ Pages 배포
 ```
