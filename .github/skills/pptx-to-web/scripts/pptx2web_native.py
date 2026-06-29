@@ -230,9 +230,17 @@ def render_pngs(pptx, outdir, scale):
         return n
 
 
+def _walk(shapes):
+    for sh in shapes:
+        if sh.shape_type == MSO_SHAPE_TYPE.GROUP:
+            yield from _walk(sh.shapes)
+        else:
+            yield sh
+
+
 def slide_points(s):
     pts, title = [], None
-    for sh in s.shapes:
+    for sh in _walk(s.shapes):
         if not sh.has_text_frame:
             continue
         for p in sh.text_frame.paragraphs:
@@ -248,7 +256,7 @@ def slide_points(s):
 
 def slide_pictures(s, media):
     out = []
-    for sh in s.shapes:
+    for sh in _walk(s.shapes):
         if sh.shape_type == MSO_SHAPE_TYPE.PICTURE:
             try:
                 img = sh.image
@@ -266,19 +274,25 @@ def build_reflow(pptx, out, scale, updates=None):
         d.mkdir(parents=True, exist_ok=True)
     for f in media.glob("*"):
         f.unlink()
+    nshot = render_pngs(pptx, media, scale)
     p = Presentation(pptx)
     onv = online_videos(pptx)
     cards = []
     for i, s in enumerate(p.slides):
         title, pts = slide_points(s)
-        cards.append({
-            "n": i+1,
-            "title": title or f"슬라이드 {i+1}",
-            "points": pts,
-            "note": slide_notes(s),
-            "imgs": slide_pictures(s, media),
-            "videos": onv.get(i, []),
-        })
+        imgs = slide_pictures(s, media)
+        note = slide_notes(s)
+        shot = f"media/slide-{i+1:03d}.png" if nshot else ""
+        videos = onv.get(i, [])
+        # never leave a slide empty: borrow notes as body, then fall back to the rendered slide image
+        body = bool(pts or imgs or videos)
+        if not body and note:
+            pts = [ln.strip() for ln in re.split(r"[\n•·]|(?<=[.!?])\s", note) if len(ln.strip()) > 4]
+            body = bool(pts)
+        if not body and shot:
+            imgs = [shot]; body = True
+        cards.append({"n": i+1, "title": title or f"슬라이드 {i+1}", "points": pts,
+                      "note": note, "imgs": imgs, "videos": videos})
     titles = [c["title"][:40] for c in cards]
     us, ut, _ = update_slides(updates)
     for h, t in zip(us, ut):
@@ -287,6 +301,9 @@ def build_reflow(pptx, out, scale, updates=None):
     deck = {"title": Path(pptx).stem, "cards": cards, "titles": titles}
     (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
     (out/"index.html").write_text(REFLOW.replace("__DECK__", json.dumps(deck, ensure_ascii=False)))
+    empties = [c["n"] for c in cards if not (c.get("html") or c["points"] or c["imgs"] or c["videos"])]
+    if empties:
+        print(f"WARN: empty slides: {empties}", file=sys.stderr)
     return len(cards), sum(len(c["videos"]) for c in cards)
 
 
