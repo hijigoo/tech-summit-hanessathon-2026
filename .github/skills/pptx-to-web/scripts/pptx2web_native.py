@@ -309,6 +309,35 @@ def build_reflow(pptx, out, scale, updates=None):
     return len(cards), sum(len(c["videos"]) for c in cards)
 
 
+def build_content(content_path, out, updates=None):
+    """Author-driven: read a hand-written content.json (AI reinterpretation of slides)
+    and render the same landscape deck shell. Avoids empty slides entirely."""
+    out = Path(out); media = out/"media"
+    out.mkdir(parents=True, exist_ok=True); media.mkdir(parents=True, exist_ok=True)
+    data = json.loads(Path(content_path).read_text())
+    title = data.get("title", "Deck")
+    cards = []; titles = []
+    for i, s in enumerate(data["slides"]):
+        if s.get("divider"):
+            cards.append({"n": i+1, "title": s["title"], "divider": True,
+                          "points": [], "note": s.get("note",""), "imgs": [], "videos": []})
+        else:
+            cards.append({"n": i+1, "title": s.get("title",""), "html": s.get("html",""),
+                          "points": [], "note": s.get("note",""), "imgs": [], "videos": []})
+        titles.append((s.get("title") or "섹션")[:40])
+    us, ut, _ = update_slides(updates)
+    for h, t in zip(us, ut):
+        cards.append({"n": len(cards)+1, "title": t, "html": h, "points": [], "note": "", "imgs": [], "videos": []})
+        titles.append(t)
+    deck = {"title": title, "cards": cards, "titles": titles}
+    (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
+    (out/"index.html").write_text(REFLOW.replace("__DECK__", json.dumps(deck, ensure_ascii=False)))
+    empties = [c["n"] for c in cards if not (c.get("html") or c.get("divider"))]
+    if empties:
+        print(f"WARN: empty slides: {empties}", file=sys.stderr)
+    return len(cards), 0
+
+
 REFLOW = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/><title>Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -344,6 +373,15 @@ li::before{content:"";position:absolute;left:0;top:16px;width:10px;height:10px;b
 .note.empty{display:none}.solo .shot{max-width:780px;margin:0 auto}
 .html{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:24px 28px}
 .html p{font-size:clamp(16px,1.7vw,22px);line-height:1.55;margin:.25em 0}
+.gr{display:grid;gap:18px}.gr2{grid-template-columns:1fr 1fr}.gr3{grid-template-columns:repeat(3,1fr)}.gr4{grid-template-columns:repeat(4,1fr)}
+.cd{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;backdrop-filter:blur(8px)}
+.cd h3{margin:0 0 8px;font-family:Sora,'Noto Sans KR';font-size:clamp(15px,1.5vw,20px);font-weight:800}.cd p,.cd li{font-size:clamp(13px,1.25vw,16px);line-height:1.5;color:#cdd8ee;margin:.2em 0}
+.ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 8px 24px rgba(34,211,238,.3)}
+.flow{display:flex;align-items:stretch;gap:14px;flex-wrap:wrap}.flow .cd{flex:1;min-width:180px;position:relative}.flow .cd:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--a);font-size:22px;z-index:2}
+.stat{font-family:Sora;font-size:clamp(30px,5vw,64px);font-weight:800;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.pill{display:inline-block;padding:5px 13px;border-radius:999px;font-size:13px;font-weight:700;margin:3px;background:linear-gradient(135deg,var(--a),var(--b));color:#03121a}
+.tag{display:inline-block;padding:3px 9px;border-radius:7px;font-size:11px;font-weight:700;background:rgba(34,211,238,.16);color:#22d3ee;margin-left:6px}
+.html .lead{font-size:clamp(16px,1.7vw,21px);color:#aebbd6;margin-bottom:18px}
 section.divider{min-height:92vh;align-items:center}
 .dvr{text-align:center}.dvr span{font-family:Sora;letter-spacing:.35em;font-size:14px;color:#7f8db0}
 .dvr h2{font-family:Sora,'Noto Sans KR';font-size:clamp(40px,7vw,90px);font-weight:800;margin:.2em 0 0;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -376,13 +414,17 @@ scrollEl.addEventListener('scroll',()=>{prog.style.transform='scaleX('+(scrollEl
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("pptx"); ap.add_argument("--out", default="docs"); ap.add_argument("--updates", default=None)
+    ap.add_argument("pptx", nargs="?"); ap.add_argument("--out", default="docs"); ap.add_argument("--updates", default=None)
     ap.add_argument("--reflow", action="store_true", help="web-native reinterpretation: screenshot + key points + notes")
+    ap.add_argument("--content", default=None, help="author-driven JSON of AI-reinterpreted slides")
     ap.add_argument("--scale", type=float, default=2.0)
     a = ap.parse_args()
-    if not os.path.exists(a.pptx):
+    if a.content:
+        n, v = build_content(a.content, a.out, a.updates)
+        print(f"OK(content): {n} slides -> {a.out}/")
+    elif not os.path.exists(a.pptx):
         sys.exit(f"Input not found: {a.pptx}")
-    if a.reflow:
+    elif a.reflow:
         n, v = build_reflow(a.pptx, a.out, a.scale, a.updates)
         print(f"OK(reflow): {n} slides, {v} online videos -> {a.out}/")
     else:

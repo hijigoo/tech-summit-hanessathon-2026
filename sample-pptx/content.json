@@ -1,0 +1,108 @@
+{
+  "title": "Microsoft Foundry를 활용한 Agentic AI",
+  "slides": [
+    {
+      "title": "Microsoft Foundry를 활용한 Agentic AI",
+      "divider": true,
+      "note": "안녕하세요. 오늘은 Microsoft Foundry를 활용한 Agentic AI에 대해 발표하겠습니다. 발표자는 Solution Engineer Kichul Kim입니다."
+    },
+    { "title": "1. Microsoft Foundry, 무엇일까요?", "divider": true,
+      "note": "먼저 Microsoft Foundry가 무엇인지부터 살펴보겠습니다." },
+    {
+      "title": "The AI app & agent factory",
+      "html": "<p class='lead'>Microsoft Foundry는 AI 앱과 에이전트를 만드는 <b>공장(factory)</b>입니다. 모델 선택부터 빌드·배포·운영까지 하나의 플랫폼에서 끝납니다.</p><div class='gr gr3'><div class='cd'><div class='ic'>🏗️</div><h3>App</h3><p>AI 애플리케이션을 빠르게 조립</p></div><div class='cd'><div class='ic'>🤖</div><h3>Agent</h3><p>자율 에이전트를 손쉽게 제작</p></div><div class='cd'><div class='ic'>⚡</div><h3>Factory</h3><p>대규모 양산형 워크플로우</p></div></div>",
+      "note": "Foundry의 핵심 비전은 'AI 앱과 에이전트를 찍어내는 공장'입니다. 누구나 빠르게 만들고 배포할 수 있게 돕습니다."
+    },
+    {
+      "title": "Build agents, your way",
+      "html": "<p class='lead'>통합·사용 편의성·개발 속도는 위로, 제어·가시성·커스터마이징은 아래로. 원하는 방식대로 에이전트를 만듭니다.</p><div class='gr gr3'><div class='cd' style='--a:#3bb78f;--b:#22d3ee'><div class='ic'>☁️</div><h3>IaaS</h3><p>Infrastructure-as-a-service · GPUs & Containers</p><span class='tag'>BYO frameworks</span></div><div class='cd' style='--a:#22d3ee;--b:#7b2ff7'><div class='ic'>⚙️</div><h3>PaaS</h3><p>Foundry Agent Service · 관리형 서비스로 코드 작성</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><div class='ic'>▶️</div><h3>SaaS</h3><p>Copilot Studio · 드래그&드롭 즉시 런타임</p></div></div>",
+      "note": "에이전트를 만드는 방식은 세 가지입니다. 인프라부터 직접 다루는 IaaS, 관리형 PaaS, 그리고 노코드 SaaS인 Copilot Studio까지 선택할 수 있습니다."
+    },
+    {
+      "title": "AI Development Fundamentals",
+      "html": "<p class='lead'>Microsoft Foundry를 중심으로 6가지 기본 요소가 순환하며 AI 개발 라이프사이클을 완성합니다.</p><div class='gr gr3'><div class='cd'><div class='ic'>🧩</div><h3>Models</h3><p>다양한 프론티어·오픈 모델</p></div><div class='cd'><div class='ic'>🧠</div><h3>Knowledge & Tools</h3><p>지식·도구 연결</p></div><div class='cd'><div class='ic'>🛠️</div><h3>Orchestration & Dev</h3><p>오케스트레이션·개발도구</p></div><div class='cd'><div class='ic'>👁️</div><h3>Observability</h3><p>관측·에이전트 제어</p></div><div class='cd'><div class='ic'>🎚️</div><h3>Fine-tuning</h3><p>미세조정·커스터마이징</p></div><div class='cd'><div class='ic'>🚀</div><h3>Deployment</h3><p>배포</p></div></div>",
+      "note": "AI 개발의 기본기는 모델, 지식·도구, 오케스트레이션, 관측, 미세조정, 배포의 6가지입니다. Foundry가 이 전체를 묶어줍니다."
+    },
+    {
+      "title": "Build → Optimize → Operate",
+      "html": "<div class='flow'><div class='cd' style='--a:#22d3ee;--b:#7b2ff7'><h3>Build</h3><p>Use Case 식별 → 모델·도구 리서치 → 프롬프트 테스트 → 빌드 → 지식·도구 추가 → 미세조정 → Multi-Agent 오케스트레이션</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>Optimize</h3><p>코드 커스터마이징 → 관리형 런타임 호스팅 → 에이전트 평가 → 배포</p></div><div class='cd' style='--a:#ff5ea0;--b:#ff8a00'><h3>Operate</h3><p>비용·규제·안정성 모니터링 → 위험 완화·보호 → 애플리케이션 통합</p></div></div><p class='lead' style='margin-top:18px'>각 단계는 '잘 동작하나요?' 체크로 반복(loop)됩니다.</p>",
+      "note": "개발 사이클은 Build, Optimize, Operate 세 단계로 반복됩니다. 잘 동작하지 않으면 다시 빌드 단계로 돌아갑니다."
+    },
+    { "title": "2. Foundry가 제공하는 서비스들", "divider": true,
+      "note": "이제 Foundry가 실제로 제공하는 서비스들을 살펴봅니다." },
+    {
+      "title": "Every model. Every use case. One platform.",
+      "html": "<p class='lead'>Foundry Models에는 <b>11,000+</b> 프론티어·오픈 모델이 있습니다. 모든 모델, 모든 유즈케이스, 하나의 플랫폼.</p><div class='gr gr2'><div class='cd'><h3>All Foundry Models</h3><p>통합된 접근 · Scalable deployment · Enterprise-Ready</p></div><div class='cd' style='--a:#3bb78f;--b:#22d3ee'><h3>Sold directly by Microsoft</h3><p>SLA & compliance · Reserved capacity · 비용 최적화 PTU · Safety guardrails(Default)</p></div></div><div style='margin-top:16px'><span class='pill'>Azure OpenAI</span><span class='pill'>DeepSeek</span><span class='pill'>xAI Grok</span><span class='pill'>Mistral</span><span class='pill'>Meta Llama</span><span class='pill'>Cohere</span><span class='pill'>Phi SLM</span><span class='pill'>NVIDIA</span></div>",
+      "note": "Foundry Models는 11,000개 이상의 모델을 한 플랫폼에서 제공합니다. 일부는 Microsoft가 직접 SLA와 보안을 보장합니다."
+    },
+    {
+      "title": "모델 라우터",
+      "html": "<p class='lead'>주요 모델들에 대한 지능형 프롬프트 라우팅</p><div class='gr gr4'><div class='cd'><h3>Select models</h3><p>작업 복잡성·품질 기준 최적 모델 선택</p></div><div class='cd'><h3>Routing profiles</h3><p>라우팅 프로필·모델 하위집합 정의</p></div><div class='cd'><h3>Enterprise reliability</h3><p>내장 보안·Observability</p></div><div class='cd'><h3>Agent Services</h3><p>지능형 라우팅으로 에이전트 최적화</p></div></div><p class='lead' style='text-align:center;margin-top:18px'>GPT-4.1 단독 대비 비슷한 정확도로 <span class='stat'>최대 60%</span> 비용 절감</p>",
+      "note": "모델 라우터는 작업마다 최적 모델로 자동 분기시켜, GPT-4.1 단독 대비 최대 60% 비용을 줄이면서 정확도는 유지합니다."
+    },
+    {
+      "title": "모델 라우터 동작 구조",
+      "html": "<div class='gr gr2'><div class='cd'><h3>Challenge</h3><p>작업에 적합한 LLM 선택은 어렵고, 단일 모델에 고집하기 쉽습니다.</p></div><div class='cd' style='--a:#3bb78f;--b:#22d3ee'><h3>Opportunity</h3><p>스마트 라우팅은 품질을 유지하며 비용을 최적화합니다.</p></div></div><div class='flow' style='margin-top:16px'><div class='cd'><h3>1단계</h3><p>사용자가 API로 엔드포인트 호출 (간단/복잡 쿼리)</p></div><div class='cd'><h3>2단계</h3><p>라우터가 평가 후 GPT-4.1-nano/mini 등 최적 모델로 동적 라우팅</p></div><div class='cd'><h3>3단계</h3><p>최적화된 Response 반환</p></div></div>",
+      "note": "라우터는 입력을 평가해 간단한 질문은 작은 모델로, 복잡한 질문은 큰 모델로 보냅니다."
+    },
+    {
+      "title": "Agent Orchestration",
+      "html": "<p class='lead'>데이터·도구를 가로질러 계획·추론·행동하는 멀티 에이전트 워크플로우를 오케스트레이션합니다.</p><div class='gr gr3'><div class='cd'><h3>모델 선택</h3><p>gpt-4.1-mini 등</p></div><div class='cd'><h3>프롬프트 작성</h3><p>Instructions</p></div><div class='cd'><h3>도구 연결</h3><p>Tools</p></div><div class='cd'><h3>지식 연결</h3><p>Knowledge</p></div><div class='cd'><h3>메모리·가드레일</h3><p>Memory · Guardrails</p></div><div class='cd'><h3>테스트</h3><p>Playground 채팅</p></div></div>",
+      "note": "Foundry 에이전트는 모델·프롬프트·도구·지식·메모리·가드레일을 연결하고 Playground에서 바로 테스트할 수 있습니다."
+    },
+    {
+      "title": "Hosted Agent",
+      "html": "<p class='lead'>에이전트 프레임워크로 만든 커스텀 코드 에이전트를 Foundry Agent Service에 배포합니다.</p><div class='flow'><div class='cd'><h3>Client</h3><p>Agent frameworks로 빌드</p></div><div class='cd'><h3>Build/Package → Containers → Deploy</h3><p>컨테이너로 패키징</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>Foundry Agent Service</h3><p>Running · hosted v1</p></div></div>",
+      "note": "내가 만든 코드 에이전트를 컨테이너로 묶어 Foundry Agent Service에 호스팅합니다."
+    },
+    {
+      "title": "One-click publishing",
+      "html": "<p class='lead'>Foundry로 만든 에이전트를 M365 Copilot과 Teams Chat에 즉시 게시합니다.</p><div class='flow'><div class='cd'><h3>Foundry Agent Service</h3><p>빌드 완료</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>M365 / A365</h3><p>Publish to Teams & Microsoft 365 Copilot</p></div></div>",
+      "note": "원클릭 게시로 에이전트를 M365 Copilot과 Teams에 즉시 배포할 수 있습니다."
+    },
+    { "title": "엣지 라우터에서 CTL11 LED는 무엇을 하나요?", "divider": true,
+      "note": "현장 시나리오를 예로 들어봅니다. 엣지 라우터의 CTL11 LED 질문입니다." },
+    {
+      "title": "현장 질의 — 멀티소스 지식이 필요한 순간",
+      "html": "<p class='lead'>\"P4324 장비가 멈추고 CTL11 경고등이 빨간불, UL 817 라벨이 보이는데 부품 교체 가능할까요?\"</p><div class='gr gr2'><div class='cd'><h3>장비 매뉴얼</h3><p>Fabric OneLake에 통합</p></div><div class='cd'><h3>전기 표준</h3><p>웹에서 확인 가능</p></div><div class='cd'><h3>사내 정책·문서</h3><p>SharePoint 관리</p></div><div class='cd'><h3>사용자 오타</h3><p>의도 해석 필요</p></div></div>",
+      "note": "이런 질문은 매뉴얼, 웹 표준, 사내 문서, 사용자 의도까지 여러 소스를 동시에 봐야 답할 수 있습니다."
+    },
+    {
+      "title": "Multi-Source AI Knowledge Bases",
+      "html": "<div class='flow'><div class='cd'><h3>Query planning</h3><p>질의 계획 수립</p></div><div class='cd'><h3>Relecloud CRM</h3><p>사용자·차량 정보</p></div><div class='cd'><h3>SharePoint</h3><p>3rd party·내부 문서</p></div><div class='cd'><h3>Web</h3><p>공개 웹 검색</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>SLM → Foundry IQ</h3><p>통합 응답</p></div></div><p class='lead' style='margin-top:18px'>여러 지식 소스를 묶어 하나의 답으로 — <b>Foundry IQ</b>.</p>",
+      "note": "Foundry IQ는 CRM, SharePoint, 웹 등 여러 지식 소스를 묶어 하나의 답으로 만들어줍니다."
+    },
+    {
+      "title": "MCP-enabled tools in Microsoft Foundry",
+      "html": "<p class='lead'>에이전트는 여러 도구를 순차적으로 연결해 작업을 수행합니다. <b>1,404개</b> 도구.</p><div class='gr gr3'><div class='cd'><h3>Configured Tools</h3><p>구성형 도구</p></div><div class='cd'><h3>Catalog Tools</h3><p>카탈로그 도구</p></div><div class='cd'><h3>Custom tools</h3><p>커스텀 도구</p></div></div><div style='margin-top:14px'><span class='pill'>Azure Cosmos DB</span><span class='pill'>GitHub</span><span class='pill'>Hugging Face</span><span class='pill'>Azure SQL</span><span class='pill'>Elasticsearch</span><span class='pill'>MCP Remote/Local</span></div>",
+      "note": "Foundry에는 1,400개가 넘는 MCP 도구가 있어, 구성·카탈로그·커스텀 도구를 자유롭게 연결합니다."
+    },
+    {
+      "title": "Fine-tuning",
+      "html": "<p class='lead'>Microsoft Foundry에서 모델을 미세조정합니다. (DeepSeek·OpenAI·Microsoft 등)</p><div class='gr gr3'><div class='cd'><h3>성능·정확도</h3><p>특정 유즈케이스 최적화</p></div><div class='cd'><h3>비용·효율</h3><p>지연 최소화</p></div><div class='cd'><h3>환각 방지</h3><p>편향 감소</p></div></div>",
+      "note": "파인튜닝으로 특정 업무에 맞춘 정확도를 높이고, 비용과 지연을 줄이며 환각을 방지합니다."
+    },
+    {
+      "title": "Foundry Control Plane",
+      "html": "<p class='lead'>조직 전반의 가시성과 제어로 AI 라이프사이클을 관리합니다.</p><div class='gr gr3'><div class='cd'><h3>운영 가시성</h3><p>토큰·지연·평가 지표</p></div><div class='cd'><h3>보안 강화</h3><p>Red teaming·데이터 유출 방지</p></div><div class='cd'><h3>전사 운영</h3><p>스케줄 평가·에러율 추적</p></div></div>",
+      "note": "Control Plane은 토큰 사용량, 보안, 평가 지표를 전사적으로 모니터링해 운영을 통제합니다."
+    },
+    {
+      "title": "Evaluators",
+      "html": "<div class='gr gr3'><div class='cd'><h3>Quality</h3><p>Document Retrieval · Groundedness · Relevance · Coherence · Fluency · NLP Metrics</p></div><div class='cd' style='--a:#ff5ea0;--b:#7b2ff7'><h3>Risk & Safety</h3><p>Jailbreaks · Hate · Violence · Self-Harm · Code Vulnerability · Data Leakage</p></div><div class='cd' style='--a:#3bb78f;--b:#22d3ee'><h3>Agents</h3><p>Intent Resolution · Tool Accuracy · Task Adherence · Completion <span class='tag'>NEW</span></p></div></div><p class='lead' style='text-align:center;margin-top:16px'>+ Custom Evaluators</p>",
+      "note": "평가기는 품질, 위험·안전, 에이전트 동작 세 영역을 측정하며 커스텀 평가기도 추가할 수 있습니다."
+    },
+    {
+      "title": "Agent 평가 예시 — 일기예보 제공",
+      "html": "<div class='flow'><div class='cd'><h3>1. User Intent</h3><p>지역 날씨·예보 시간 의도 해석</p></div><div class='cd'><h3>2. 도구 호출</h3><p>get_loc() · get_weather() — 정확도·성공율 평가</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>3. 응답</h3><p>Task 완료율·Groundedness·Relevance</p></div></div>",
+      "note": "예: 날씨 질문에 대해 의도 해석 → 도구 호출 → 응답 각 단계를 정밀하게 평가합니다."
+    },
+    {
+      "title": "Model Customization Options",
+      "html": "<p class='lead'>비즈니스 가치 ↑, 적응 성숙도 → 순으로 6단계.</p><div class='gr gr2'><div class='cd'><h3>01 Base model</h3><p>Foundry Models</p></div><div class='cd'><h3>02 Prompt engineering</h3><p>Declarative agents</p></div><div class='cd'><h3>03 RAG·Multi-agents</h3><p>Foundry IQ · Agent Service</p></div><div class='cd'><h3>04 Feedback/signals</h3><p>Foundry Control Plane</p></div><div class='cd'><h3>05 Fine-tuning/RAFT</h3><p>Distillation in Foundry</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>06 Continuous loop</h3><p>지속 개선 신호 루프</p></div></div>",
+      "note": "기본 모델부터 프롬프트, RAG, 피드백, 파인튜닝, 지속 개선까지 6단계로 모델을 고도화합니다."
+    },
+    { "title": "감사합니다", "divider": true,
+      "note": "이상으로 발표를 마칩니다. 감사합니다." }
+  ]
+}
