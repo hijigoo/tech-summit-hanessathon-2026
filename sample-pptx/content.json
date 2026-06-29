@@ -59,7 +59,10 @@
   {
    "title": "Hosted Agent",
    "html": "<p class='lead'>커스텀 코드 에이전트를 컨테이너로 묶어 Agent Service에 호스팅.</p><div class='flow'><div class='cd'><h3>Client</h3><p>Agent frameworks → Build/Package → Containers → Deploy</p></div><div class='cd' style='--a:#a6ed5d;--b:#22d3ee'><h3>Foundry Agent Service</h3><p>버전 v1, type hosted, Status Running, event-planner-workflow</p></div></div>",
-   "note": "Hosted Agent은 어떤 프레임워크로 만든 코드 에이전트든 컨테이너로 묶어 Foundry Agent Service에 호스팅하는 방식입니다. Build/Package→Containers→Deploy 흐름으로 클라이언트 에이전트를 그대로 올립니다. 콘솔에서 버전·타입·상태(Running)·ID를 바로 확인합니다. 프레임워크 자유를 유지하면서 운영은 관리형으로 맡길 수 있습니다."
+   "note": "Hosted Agent은 어떤 프레임워크로 만든 코드 에이전트든 컨테이너로 묶어 Foundry Agent Service에 호스팅하는 방식입니다. Build/Package→Containers→Deploy 흐름으로 클라이언트 에이전트를 그대로 올립니다. 콘솔에서 버전·타입·상태(Running)·ID를 바로 확인합니다. 프레임워크 자유를 유지하면서 운영은 관리형으로 맡길 수 있습니다.",
+   "imgs": [
+    "media/shot_agent.png"
+   ]
   },
   {
    "title": "One-click publishing",
@@ -84,17 +87,26 @@
   {
    "title": "MCP-enabled tools in Microsoft Foundry",
    "html": "<p class='lead'>1,404개 도구를 순차 연결해 작업 수행.</p><div class='gr gr3'><div class='cd'><h3>Configured</h3></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>Catalog</h3></div><div class='cd' style='--a:#22d3ee;--b:#3bb78f'><h3>Custom</h3></div></div><div style='margin-top:10px'><span class='pill'>Cosmos DB</span><span class='pill'>GitHub</span><span class='pill'>Hugging Face</span><span class='pill'>SQL</span><span class='pill'>Elastic</span><span class='pill'>Azure Speech</span></div>",
-   "note": "Foundry 도구 카탈로그에는 1,404개 MCP 도구가 있고 Configured·Catalog·Custom 세 분류입니다. Cosmos DB, GitHub, Hugging Face, SQL, Elastic 등 원격·로컬 MCP를 골라 붙입니다. 에이전트는 이 도구들을 순차로 연결해 작업을 수행합니다. 사실상 어떤 시스템이든 도구로 끌어올 수 있습니다."
+   "note": "Foundry 도구 카탈로그에는 1,404개 MCP 도구가 있고 Configured·Catalog·Custom 세 분류입니다. Cosmos DB, GitHub, Hugging Face, SQL, Elastic 등 원격·로컬 MCP를 골라 붙입니다. 에이전트는 이 도구들을 순차로 연결해 작업을 수행합니다. 사실상 어떤 시스템이든 도구로 끌어올 수 있습니다.",
+   "imgs": [
+    "media/shot_tools.png"
+   ]
   },
   {
    "title": "Fine-tuning",
    "html": "<p class='lead'>특정 사용 사례에 맞춘 성능·정확도 향상.</p><div class='gr gr3'><div class='cd'><div class='ic'>🎯</div><h3>정확도↑</h3><p>유스케이스 맞춤 성능</p></div><div class='cd'><div class='ic'>💸</div><h3>비용↓·지연↓</h3><p>효율 극대화</p></div><div class='cd'><div class='ic'>🛡️</div><h3>환각 방지</h3><p>편향·hallucination 감소</p></div></div>",
-   "note": "Fine-tuning은 모델을 특정 유스케이스에 맞춰 성능과 정확도를 끌어올립니다. 비용 절감과 효율 극대화, 지연 최소화 효과가 있고 편향과 환각도 줄입니다. 콘솔에서 DeepSeek·OpenAI·Microsoft 기반 모델로 진행 상황·정확도를 추적합니다. 베이스 모델로 부족할 때 가장 확실한 커스터마이징 수단입니다."
+   "note": "Fine-tuning은 모델을 특정 유스케이스에 맞춰 성능과 정확도를 끌어올립니다. 비용 절감과 효율 극대화, 지연 최소화 효과가 있고 편향과 환각도 줄입니다. 콘솔에서 DeepSeek·OpenAI·Microsoft 기반 모델로 진행 상황·정확도를 추적합니다. 베이스 모델로 부족할 때 가장 확실한 커스터마이징 수단입니다.",
+   "imgs": [
+    "media/shot_finetune.png"
+   ]
   },
   {
    "title": "Foundry Control Plane",
    "html": "<p class='lead'>조직 전반 가시성·제어로 AI 라이프사이클 관리.</p><div class='gr gr3'><div class='cd'><h3>운영 가시성</h3><p>토큰·지연·런 모니터</p></div><div class='cd'><h3>보안 강화</h3><p>레드팀·민감정보 누출 점검</p></div><div class='cd' style='--a:#ff8a00;--b:#ff5ea0'><h3>전사 운영</h3><p>평가·일정평가·에러율</p></div></div>",
-   "note": "Foundry Control Plane은 조직 전체의 가시성과 제어로 AI 라이프사이클을 관리합니다. 토큰 사용·지연·에이전트 런, 요청·토큰 추이, 에러율을 대시보드로 봅니다. 레드팀 공격 성공률, 민감정보 누출 같은 보안 지표도 함께 추적합니다. 운영 가시성·보안·전사 관리를 한곳에서 잡습니다."
+   "note": "Foundry Control Plane은 조직 전체의 가시성과 제어로 AI 라이프사이클을 관리합니다. 토큰 사용·지연·에이전트 런, 요청·토큰 추이, 에러율을 대시보드로 봅니다. 레드팀 공격 성공률, 민감정보 누출 같은 보안 지표도 함께 추적합니다. 운영 가시성·보안·전사 관리를 한곳에서 잡습니다.",
+   "imgs": [
+    "media/shot_monitor.png"
+   ]
   },
   {
    "title": "Evaluators",
