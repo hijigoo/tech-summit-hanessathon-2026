@@ -1,6 +1,6 @@
 {
   "title": "샘플 덱 제목",
-  "_doc": "참고 템플릿. 각 슬라이드는 {title,html,note} 또는 {title,divider:true,note}. html은 .gr/.cd/.ic/.flow/.stat/.pill/.tag + inline <svg> 사용. 그라데이션 id='h'(시안→퍼플) 재사용.",
+  "_doc": "참고 템플릿. 각 슬라이드는 {title,html,note} 또는 {title,divider:true,note}. html은 .gr/.cd/.ic/.flow/.stat/.pill/.tag + inline <svg> + <pre class='mermaid'>(간단 흐름) 사용. 그라데이션 id='h'(시안→퍼플) 재사용.",
   "slides": [
     { "title": "프레젠테이션 제목", "divider": true, "note": "표지·섹션·마무리는 divider. 큰 그라데이션 hero로 렌더." },
 
@@ -11,6 +11,11 @@
     { "title": "단계 플로우 예시",
       "html": "<div class='flow'><div class='cd'><div class='ic'>1</div><h3>입력</h3></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><div class='ic'>2</div><h3>처리</h3></div><div class='cd' style='--a:#ff5ea0;--b:#ff8a00'><div class='ic'>3</div><h3>출력</h3></div></div>",
       "note": ".flow는 카드 사이에 화살표 자동." },
+
+    { "title": "Mermaid 다이어그램 예시",
+      "html": "<pre class='mermaid'>flowchart LR\nA[입력]-->B{라우터}\nB-->C[출력]\n</pre><div class='gr gr3' style='margin-top:6px'><div class='cd'><h3>입력</h3><p>단계 설명</p></div><div class='cd'><h3>라우터</h3><p>분기 설명</p></div><div class='cd'><h3>출력</h3><p>결과 설명</p></div></div>",
+      "note": "간단한 흐름은 mermaid 블록(다크 테마·CDN 자동). 노드 7개 이내, 디테일은 아래 카드로." },
+
 
     { "title": "도넛 + 통계 예시",
       "html": "<div class='gr gr2' style='align-items:center'><svg viewBox='0 0 200 200' style='width:100%;max-height:40vh'><defs><linearGradient id='h' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#7b2ff7'/></linearGradient></defs><circle cx='100' cy='100' r='80' fill='none' stroke='#1c2540' stroke-width='22'/><circle cx='100' cy='100' r='80' fill='none' stroke='url(#h)' stroke-width='22' stroke-dasharray='301 502' stroke-linecap='round' transform='rotate(-90 100 100)'/><text x='100' y='110' fill='#fff' font-size='40' font-weight='800' text-anchor='middle'>60%</text></svg><div class='cd'><h3>핵심 수치</h3><p>도넛/막대/팬인 등 inline SVG로 시각화.</p></div></div>",
