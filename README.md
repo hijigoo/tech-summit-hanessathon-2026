@@ -1,11 +1,35 @@
-# pptx-to-web — PowerPoint를 웹 발표 사이트로 만드는 Copilot 스킬
+# pptx-to-web — 멈춰있는 PPTX를 "항상 최신인 라이브 웹 데모"로 바꾸는 Copilot 스킬
 
-> 하네스톤 2026 · **트랙2** · "GitHub Copilot으로 Harness Asset 만들기"
-> **제출물: Copilot Skill** — `.github/skills/pptx-to-web/`
+> 하네스톤 2026 · **트랙2** · 제출물: **Copilot Skill** (`.github/skills/pptx-to-web/`)
 
-PPTX를 던지면 에이전트가 모든 장표를 보고 **박스·다이어그램으로 재해석한 웹 덱**을 만들어 GitHub Pages에 배포하는, 복붙 가능한 재사용 스킬입니다. 아래 데모는 이 스킬이 자동 생성한 결과물입니다.
+**PPT는 만드는 순간 낡습니다.** 자료를 고치려면 파일 열고, 다시 export하고, 메일에 첨부하고, 버전이 엉킵니다.
+`pptx-to-web`은 PPTX를 **웹으로 바꿔** GitHub Copilot에게 한마디만 하면 **최신 정보로 갱신**되고, 고객에겐 **URL 하나로 즉시 전달**됩니다.
 
-🔗 **스킬이 만든 결과 예시:** https://hijigoo.github.io/tech-summit-hanessathon-2026/
+🔗 **이 스킬이 자동 생성한 결과:** https://hijigoo.github.io/tech-summit-hanessathon-2026/
+
+## 한눈에 보이는 효과: Before → After
+정적인 슬라이드 한 장이 **다이어그램 중심 웹 슬라이드**로 재해석됩니다. (스킬 호출 한 번, 사람 손 0)
+
+| Before — PPTX 원본 | After — 자동 생성 웹 |
+|---|---|
+| ![before](docs/readme/before.png) | ![after](docs/readme/after.png) |
+| ![before2](docs/readme/before2.png) | ![after2](docs/readme/after2.png) |
+
+## 왜 효과적인가
+| 기존 방식 (PPTX) | pptx-to-web |
+|---|---|
+| 수정할 때마다 파일 열고 재export·재첨부 | **Copilot에 한마디 → 사이트 자동 갱신·재배포** |
+| 메일 첨부·버전 충돌·"최신본 어디?" | **URL 하나** — 누구나 같은 최신본 |
+| 발표 후 내용이 곧 구식 | **Azure/Foundry "What's new" 자동 반영** |
+| 디자인·빈 장표 수작업 | **AI 재해석 다이어그램 · 빈 슬라이드 0 자동 검증** |
+
+## 동작 방식 (스킬 하나로 6단계)
+1. **캡처** — PPTX 전체를 PNG로
+2. **재해석** — 에이전트가 PNG를 보고 발표자 노트 → 박스·도넛·허브·플로우 다이어그램으로 작성
+3. **최신화** — Azure 공식 "What's new" 자동 추가
+4. **빌드** — 목차·1화면 랜드스케이프·6색 테마·발표 노트 덱 생성
+5. **검증** — 빈 장표 0 자동 확인
+6. **배포** — GitHub Pages → 고객에게 URL만 공유
 
 ## 스킬 구성
 | 파일 | 역할 |
@@ -17,19 +41,6 @@ PPTX를 던지면 에이전트가 모든 장표를 보고 **박스·다이어그
 | `scripts/verify.js` | headless 렌더로 빈 슬라이드 0 검증 |
 | `templates/` | 컴포넌트 예시 + 완성 덱 레퍼런스 |
 
-## 동작 방식 (스킬 하나로 6단계)
-1. **캡처** — PPTX 전체를 스크린샷 PNG로
-2. **재해석** — 에이전트가 PNG를 보고 발표자 노트 → 박스·도형·플로우로 HTML 작성
-3. **최신화** — Azure 공식 "What's new" 자동 추가
-4. **빌드** — 목차·1화면 랜드스케이프·6색 테마·발표 노트 덱 생성
-5. **검증** — 빈 장표 0 자동 확인
-6. **배포** — GitHub Pages
-
-## 왜 1등인가
-- **스킬 하나로 끝**: 다른 도구 없이 캡처→배포 전 과정 자동.
-- **AI 재해석**: 텍스트 추출이 아닌 화면 이해 → 허브·도넛·막대·팬인 SVG 다이어그램.
-- **자가 검증**: 빈 슬라이드 0 보장. **재사용**: 템플릿 복사로 어떤 PPT도 동일 품질.
-
 ## 사용
 ```bash
 S=.github/skills/pptx-to-web
@@ -37,3 +48,6 @@ pip install -r $S/scripts/requirements.txt
 python3 $S/scripts/capture.py deck.pptx --out /tmp/shots
 python3 $S/scripts/pptx2web_native.py --content content.json --updates docs/updates.json --out docs
 ```
+이후 내용 변경은 Copilot에게 요청만 하면 사이트가 자동 갱신됩니다.
+
+**활용 대상:** 최신 정보를 자주 반영해 고객에게 발표·공유해야 하는 SE·세일즈·교육자.
