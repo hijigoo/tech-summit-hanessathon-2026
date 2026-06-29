@@ -15,6 +15,13 @@
 | ![before](docs/readme/before.png) | ![after](docs/readme/after.png) |
 | ![before2](docs/readme/before2.png) | ![after2](docs/readme/after2.png) |
 
+## 텍스트 슬라이드 → 다이어그램으로 자동 재해석
+복잡한 흐름은 **간단한 Mermaid 다이어그램**으로, 디테일은 카드로 함께 — 빌더가 다크 테마·CDN까지 자동 처리합니다.
+
+| 모델 라우터 동작 | Build → Optimize → Operate |
+|---|---|
+| ![diagram1](docs/readme/diagram1.png) | ![diagram2](docs/readme/diagram2.png) |
+
 ## 왜 효과적인가
 | 기존 방식 (PPTX) | pptx-to-web |
 |---|---|
@@ -25,7 +32,7 @@
 
 ## 동작 방식 (스킬 하나로 6단계)
 1. **캡처** — PPTX 전체를 PNG로
-2. **재해석** — 에이전트가 PNG를 보고 발표자 노트 → 박스·도넛·허브·플로우 다이어그램으로 작성
+2. **재해석** — 에이전트가 PNG를 보고 발표자 노트 → 박스·도넛·허브·Mermaid 플로우 다이어그램으로 작성
 3. **최신화** — Azure 공식 "What's new" 자동 추가
 4. **빌드** — 목차·1화면 랜드스케이프·6색 테마·발표 노트 덱 생성
 5. **검증** — 빈 장표 0 자동 확인
