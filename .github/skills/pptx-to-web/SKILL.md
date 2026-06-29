@@ -30,11 +30,12 @@ python3 scripts/pptx2web_native.py <input.pptx> --out docs
 - 각 슬라이드 아래 **발표 스크립트**(PPTX 발표자 노트) 표시(있을 때만).
 - 출력: `docs/index.html`, `docs/media/*`, `docs/deck.json`.
 
-## UI/디자인
+## UI/디자인 (reflow)
 - **왼쪽 사이드바**: 번호+제목 목차, 현재 슬라이드 자동 하이라이트, 클릭 시 스크롤.
-- **오른쪽 본문**: 위→아래 세로 스크롤, `scroll-snap`으로 한 장씩 정렬.
-- 슬라이드별 그라데이션 배경(6테마 로테이션), 화이트 타이포, 글래스 표,
-  컬러 진행감, 16:9 카드, 모바일 사이드바 축소. 한글 웹폰트(Noto Sans KR).
+- **오른쪽 본문**: 세로 스크롤(snap), 상단 스크롤 진행바, 떠다니는 메시 그라데이션 배경.
+- **AOS**(animate-on-scroll, CDN)로 제목·bullet·이미지가 스크롤 시 페이드/줌 등장.
+- 글래스모피즘 카드(블러), 그라데이션 제목, 6색 테마 로테이션, Sora+Noto Sans KR 폰트.
+- 외부 라이브러리는 모두 CDN(빌드 불필요): AOS 2.3.4, Google Fonts. 16:9 비고정·높이 가변.
 
 ## 변환 규칙 (native)
 1. python-pptx로 텍스트런(폰트크기·색·볼드·정렬), 그림, 표를 추출.

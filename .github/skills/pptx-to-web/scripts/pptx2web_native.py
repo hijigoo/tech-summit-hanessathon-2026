@@ -293,49 +293,59 @@ def build_reflow(pptx, out, scale, updates=None):
 REFLOW = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/><title>Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <style>
+:root{--a:#22d3ee;--b:#7b2ff7}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:'Noto Sans KR','Poppins',system-ui,sans-serif}
-body{display:flex;background:#070a16;color:#e6edf3}
-#side{width:280px;flex:0 0 280px;height:100vh;overflow-y:auto;background:#0b1020;border-right:1px solid #1c2540;padding:22px 0}
-#side h1{font-family:Poppins;font-size:15px;font-weight:800;margin:0 20px 18px;line-height:1.4;background:linear-gradient(90deg,#22d3ee,#7b2ff7,#ff5ea0);-webkit-background-clip:text;background-clip:text;color:transparent}
-#side a{display:flex;gap:10px;align-items:center;padding:9px 20px;color:#9fb0d0;text-decoration:none;font-size:13px;border-left:3px solid transparent;transition:.15s}
+html,body{margin:0;height:100%;font-family:'Noto Sans KR','Sora',system-ui,sans-serif}
+body{display:flex;background:#05060d;color:#e6edf3;overflow:hidden}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(40vw 40vw at 12% 8%,rgba(34,211,238,.18),transparent),radial-gradient(45vw 45vw at 90% 18%,rgba(123,47,247,.20),transparent),radial-gradient(50vw 50vw at 70% 95%,rgba(255,94,160,.16),transparent);animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateY(-4%) scale(1.05)}}
+#prog{position:fixed;top:0;left:280px;right:0;height:3px;z-index:20;background:linear-gradient(90deg,#22d3ee,#7b2ff7,#ff5ea0);transform-origin:0;transform:scaleX(0)}
+#side{width:280px;flex:0 0 280px;height:100vh;overflow-y:auto;background:rgba(8,11,22,.82);backdrop-filter:blur(14px);border-right:1px solid #1c2540;padding:22px 0;z-index:10}
+#side h1{font-family:Sora;font-size:15px;font-weight:800;margin:0 20px 20px;line-height:1.4;background:linear-gradient(90deg,#22d3ee,#7b2ff7,#ff5ea0);-webkit-background-clip:text;background-clip:text;color:transparent}
+#side a{display:flex;gap:11px;align-items:center;padding:9px 20px;color:#9fb0d0;text-decoration:none;font-size:13px;border-left:3px solid transparent;transition:.18s}
 #side a:hover{background:#131a30;color:#fff}#side a.on{background:#131a30;color:#fff;border-left-color:#22d3ee}
-#side a b{font-family:Poppins;color:#445;min-width:22px}#side a.on b{color:#22d3ee}
-#scroll{flex:1;height:100vh;overflow-y:auto;scroll-snap-type:y proximity;scroll-behavior:smooth;padding:5vh 5vw}
-section{scroll-snap-align:start;min-height:90vh;display:flex;flex-direction:column;justify-content:center;margin-bottom:7vh;max-width:1100px;margin-inline:auto}
-.t{font-family:Poppins,'Noto Sans KR';font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.2;margin:0 0 22px;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
-.row{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:start}
+#side a b{font-family:Sora;color:#445;min-width:22px}#side a.on b{color:#22d3ee}
+#scroll{flex:1;height:100vh;overflow-y:auto;scroll-snap-type:y proximity;scroll-behavior:smooth;padding:6vh 5vw;z-index:1}
+section{scroll-snap-align:center;min-height:88vh;display:flex;flex-direction:column;justify-content:center;margin-bottom:8vh;max-width:1120px;margin-inline:auto}
+.t{font-family:Sora,'Noto Sans KR';font-size:clamp(30px,4.4vw,58px);font-weight:800;line-height:1.15;margin:0 0 26px;letter-spacing:-.5px;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.row{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:start}
 .row.solo{grid-template-columns:1fr}
-ul{margin:0;padding:0;list-style:none}
-li{position:relative;padding:12px 0 12px 26px;font-size:clamp(16px,1.6vw,21px);line-height:1.6;border-bottom:1px solid rgba(255,255,255,.06)}
-li::before{content:"";position:absolute;left:0;top:20px;width:11px;height:11px;border-radius:3px;background:linear-gradient(135deg,var(--a),var(--b))}
-.shot{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:10px;background:rgba(255,255,255,.04)}
-.shot img{width:100%;display:block;border-radius:10px}
-.vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px}
-.note{margin-top:22px;background:#0b1020;border:1px solid #1c2540;border-radius:14px;padding:16px 20px;color:#aebbd6;font-size:15px;line-height:1.7;white-space:pre-wrap}
-.note b{display:block;font-family:Poppins;font-size:12px;letter-spacing:.08em;color:#22d3ee;margin-bottom:6px}
-.note.empty{display:none}.solo .shot{max-width:760px;margin:0 auto}
-.html p{font-size:clamp(16px,1.7vw,22px);line-height:1.5;margin:.2em 0}
-@media(max-width:860px){.row{grid-template-columns:1fr}#side{width:64px;flex-basis:64px}#side h1,#side a span{display:none}}
+ul{margin:0;padding:26px 28px;list-style:none;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:18px;backdrop-filter:blur(8px)}
+li{position:relative;padding:13px 0 13px 30px;font-size:clamp(16px,1.6vw,21px);line-height:1.6;border-bottom:1px solid rgba(255,255,255,.06)}li:last-child{border:0}
+li::before{content:"";position:absolute;left:0;top:21px;width:12px;height:12px;border-radius:4px;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 0 14px var(--a)}
+.shot{border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 70px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:10px;padding:10px;background:rgba(255,255,255,.05)}
+.shot img{width:100%;display:block;border-radius:12px}
+.vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+.note{margin-top:24px;background:rgba(11,16,32,.7);border:1px solid #1c2540;border-radius:16px;padding:18px 22px;color:#aebbd6;font-size:15px;line-height:1.75;white-space:pre-wrap;backdrop-filter:blur(8px)}
+.note b{display:block;font-family:Sora;font-size:12px;letter-spacing:.1em;color:#22d3ee;margin-bottom:7px}
+.note.empty{display:none}.solo .shot{max-width:780px;margin:0 auto}
+.html{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:24px 28px}
+.html p{font-size:clamp(16px,1.7vw,22px);line-height:1.55;margin:.25em 0}
+@media(max-width:860px){.row{grid-template-columns:1fr}#side{width:62px;flex-basis:62px}#side h1,#side a span{display:none}#prog{left:62px}}
 </style></head><body>
+<div id="bg"></div><div id="prog"></div>
 <nav id="side"><h1 id="dt"></h1><div id="toc"></div></nav>
-<main id="scroll"></main><script>
+<main id="scroll"></main>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script><script>
 const D=__DECK__;
-const TH=[['#22d3ee','#7b2ff7'],['#ff5ea0','#7b2ff7'],['#3bb78f','#0b9'],['#ff8a00','#ff5ea0'],['#22d3ee','#3bb78f'],['#a6ed5d','#22d3ee']];
+const TH=[['#22d3ee','#7b2ff7'],['#ff5ea0','#7b2ff7'],['#3bb78f','#22d3ee'],['#ff8a00','#ff5ea0'],['#22d3ee','#3bb78f'],['#a6ed5d','#22d3ee']];
 dt.textContent=D.title;scrollEl=document.getElementById('scroll');toc=document.getElementById('toc');
 D.cards.forEach((c,i)=>{const t=TH[i%TH.length];let body;
-  if(c.html){body='<div class="html">'+c.html+'</div>';}
-  else{const pts=c.points.map(x=>'<li>'+x.replace(/</g,'&lt;')+'</li>').join('');
-    const vis=c.videos&&c.videos.length?'<div class="vid"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.imgs&&c.imgs.length?'<div class="shot">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');
+  if(c.html){body='<div class="html" data-aos="fade-up">'+c.html+'</div>';}
+  else{const pts=c.points.map((x,k)=>'<li data-aos="fade-up" data-aos-delay="'+(k*60)+'">'+x.replace(/</g,'&lt;')+'</li>').join('');
+    const vis=c.videos&&c.videos.length?'<div class="vid" data-aos="zoom-in"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.imgs&&c.imgs.length?'<div class="shot" data-aos="zoom-in">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');
     const solo=pts?'':' solo';body='<div class="row'+solo+'">'+(pts?'<ul>'+pts+'</ul>':'')+vis+'</div>';}
-  scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" style="--a:'+t[0]+';--b:'+t[1]+'"><h2 class="t">'+(c.title||'').replace(/</g,'&lt;')+'</h2>'+body+'</section>');
-  const sec=scrollEl.lastElementChild;const nd=document.createElement('div');nd.className='note'+(c.note?'':' empty');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=c.note||'';nd.appendChild(sp);sec.appendChild(nd);
+  scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" style="--a:'+t[0]+';--b:'+t[1]+'"><h2 class="t" data-aos="fade-right">'+(c.title||'').replace(/</g,'&lt;')+'</h2>'+body+'</section>');
+  const sec=scrollEl.lastElementChild;const nd=document.createElement('div');nd.className='note'+(c.note?'':' empty');nd.setAttribute('data-aos','fade-up');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=c.note||'';nd.appendChild(sp);sec.appendChild(nd);
   toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+(D.titles[i]||'')+'</span></a>');});
-const links=[...toc.querySelectorAll('a')];
+AOS.init({duration:650,once:true,easing:'ease-out-cubic'});
+const links=[...toc.querySelectorAll('a')],prog=document.getElementById('prog');
 const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=links[+e.target.id.slice(1)];a.classList.add('on');a.scrollIntoView({block:'nearest'});}}),{root:scrollEl,threshold:.4});
 document.querySelectorAll('section').forEach(s=>ob.observe(s));
+scrollEl.addEventListener('scroll',()=>{prog.style.transform='scaleX('+(scrollEl.scrollTop/(scrollEl.scrollHeight-scrollEl.clientHeight||1))+')';});
 </script></body></html>"""
 
 
