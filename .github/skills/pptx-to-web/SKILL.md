@@ -1,6 +1,6 @@
 ---
 name: pptx-to-web
-description: Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — left sidebar table of contents, vertical scroll-snap slides, selectable text, images, tables, embedded/YouTube videos — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN: "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".
+description: Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — left sidebar table of contents, vertical scroll-snap slides, selectable text, images, tables, embedded/YouTube videos, speaker notes below each slide — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN: "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "발표 스크립트", "발표자 노트", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".
 ---
 
 # pptx-to-web
@@ -16,6 +16,7 @@ pip install -r scripts/requirements.txt   # python-pptx, PyMuPDF
 python3 scripts/pptx2web_native.py <input.pptx> --out docs
 ```
 - 텍스트 선택·검색 가능, 이미지/표/YouTube 임베드, 슬라이드별 제목 자동 목차.
+- 각 슬라이드 아래 **발표 스크립트**(PPTX 발표자 노트) 표시(있을 때만).
 - 출력: `docs/index.html`, `docs/media/*`, `docs/deck.json`.
 
 ## UI/디자인
@@ -30,6 +31,7 @@ python3 scripts/pptx2web_native.py <input.pptx> --out docs
 3. 그림은 blob 추출, 표는 `<table>`, 어두운 글자색은 화이트로 치환(가독성).
 4. 슬라이드 rels의 외부 링크(YouTube/Vimeo)는 `<iframe>`으로 임베드.
 5. 슬라이드 제목 = 첫 텍스트(공백/제어문자 정리) → 사이드바 목차.
+6. 발표자 노트(`notes_slide`)를 추출해 슬라이드 카드 아래 "발표 스크립트"로 표시.
 
 ## 최신 업데이트 자동 추가 (Azure 공식)
 발표 내용이 최신 상태를 유지하도록, Azure/Microsoft Foundry 공식 "What's new"를

@@ -100,10 +100,16 @@ def slide_title(s, n):
     return f"슬라이드 {n}"
 
 
+def slide_notes(s):
+    if not s.has_notes_slide:
+        return ""
+    return re.sub(r"\n{3,}", "\n\n", s.notes_slide.notes_text_frame.text.strip())
+
+
 def update_slides(updates_path):
     """Build extra 'latest update' slide HTML + titles from updates.json."""
     if not updates_path or not os.path.exists(updates_path):
-        return [], []
+        return [], [], []
     u = json.loads(Path(updates_path).read_text())
     src = u.get("source", ""); fetched = u.get("fetched", "")
     slides, titles = [], []
@@ -117,7 +123,7 @@ def update_slides(updates_path):
         slides.append(f'<div class="s" style="left:6%;top:10%;width:88%;height:82%;">'
                       f'<p style="font-size:4.4cqh;color:#22d3ee;">{html.escape(g["category"])}</p>{lis}</div>')
         titles.append("업데이트 · " + g["category"][:24])
-    return slides, titles
+    return slides, titles, [""] * len(slides)
 
 
 def build(pptx, out, updates=None):
@@ -137,9 +143,10 @@ def build(pptx, out, updates=None):
         for u in onv.get(i, []):
             parts.append(f'<div class="s vid" style="left:0;top:0;width:100%;height:100%;"><iframe src="{html.escape(u)}" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>')
         slides.append("".join(x for x in parts if x))
-    us, ut = update_slides(updates)
-    slides += us; titles += ut
-    deck = {"title": Path(pptx).stem, "aspect": W/H, "slides": slides, "titles": titles}
+    notes = [slide_notes(s) for s in p.slides]
+    us, ut, un = update_slides(updates)
+    slides += us; titles += ut; notes += un
+    deck = {"title": Path(pptx).stem, "aspect": W/H, "slides": slides, "titles": titles, "notes": notes}
     (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
     (out/"index.html").write_text(HTML.replace("__DECK__", json.dumps(deck, ensure_ascii=False)))
     return len(slides), len(onv)
@@ -172,6 +179,10 @@ section{scroll-snap-align:start;min-height:92vh;display:flex;align-items:center;
 .s td{border:1px solid rgba(255,255,255,.18);padding:.4em .6em;background:rgba(255,255,255,.06)}
 .s tr:first-child td{background:rgba(255,255,255,.16);font-weight:700}
 .s.vid iframe{width:100%;height:100%;border:0;border-radius:12px}
+.note{width:100%;max-width:1280px;margin:18px auto 0;background:#0b1020;border:1px solid #1c2540;border-radius:14px;padding:16px 20px;color:#aebbd6;font-size:15px;line-height:1.65;white-space:pre-wrap}
+.note b{display:block;font-family:Poppins;font-size:12px;letter-spacing:.08em;color:#22d3ee;margin-bottom:6px}
+.note.empty{display:none}
+section{flex-direction:column}
 @media(max-width:760px){#side{width:64px;flex-basis:64px}#side h1,#side a span{display:none}}
 </style></head><body>
 <nav id="side"><h1 id="dt"></h1><div id="toc"></div></nav>
@@ -182,6 +193,8 @@ dt.textContent=D.title;
 scrollEl=document.getElementById('scroll');toc=document.getElementById('toc');
 D.slides.forEach((h,i)=>{const t=TH[i%TH.length];
   scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'"><div class="slide" style="--ar:'+(D.aspect||16/9)+';--bg:linear-gradient(135deg,'+t[0]+','+t[2]+');--a:'+t[1]+';--b:'+t[2]+'">'+h+'</div></section>');
+  const sec=scrollEl.lastElementChild, nt=(D.notes&&D.notes[i])||'';
+  const nd=document.createElement('div');nd.className='note'+(nt?'':' empty');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=nt;nd.appendChild(sp);sec.appendChild(nd);
   toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'" data-i="'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+(D.titles[i]||'')+'</span></a>');});
 const links=[...toc.querySelectorAll('a')];
 const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=links[+e.target.id.slice(1)];a.classList.add('on');a.scrollIntoView({block:'nearest'});}}),{root:scrollEl,threshold:.5});
