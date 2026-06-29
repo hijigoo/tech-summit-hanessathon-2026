@@ -201,11 +201,143 @@ const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.
 document.querySelectorAll('section').forEach(s=>ob.observe(s));
 </script></body></html>"""
 
+
+# ---------- reflow mode: screenshot + web-native reinterpretation ----------
+
+def find_soffice():
+    for c in ("soffice", "libreoffice", "/opt/homebrew/bin/soffice",
+              "/Applications/LibreOffice.app/Contents/MacOS/soffice"):
+        if shutil.which(c) or os.path.exists(c):
+            return c
+    return None
+
+
+def render_pngs(pptx, outdir, scale):
+    import tempfile, subprocess
+    so = find_soffice()
+    if not so:
+        return 0
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run([so, "--headless", "--convert-to", "pdf", "--outdir", tmp, pptx],
+                       check=True, capture_output=True)
+        pdfs = list(Path(tmp).glob("*.pdf"))
+        if not pdfs:
+            return 0
+        import fitz
+        doc = fitz.open(pdfs[0]); n = doc.page_count
+        for i in range(n):
+            doc[i].get_pixmap(matrix=fitz.Matrix(scale, scale)).save(str(outdir/f"slide-{i+1:03d}.png"))
+        return n
+
+
+def slide_points(s):
+    pts, title = [], None
+    for sh in s.shapes:
+        if not sh.has_text_frame:
+            continue
+        for p in sh.text_frame.paragraphs:
+            t = re.sub(r"\s+", " ", p.text.strip())
+            if not t:
+                continue
+            if title is None:
+                title = t
+            else:
+                pts.append(t)
+    return title, pts
+
+
+def build_reflow(pptx, out, scale, updates=None):
+    out = Path(out); media = out/"media"
+    for d in (out, media):
+        d.mkdir(parents=True, exist_ok=True)
+    for f in media.glob("*"):
+        f.unlink()
+    n = render_pngs(pptx, media, scale)
+    p = Presentation(pptx)
+    onv = online_videos(pptx)
+    cards = []
+    for i, s in enumerate(p.slides):
+        title, pts = slide_points(s)
+        note = slide_notes(s)
+        cards.append({
+            "n": i+1,
+            "title": title or f"슬라이드 {i+1}",
+            "points": pts,
+            "note": note,
+            "img": f"media/slide-{i+1:03d}.png" if n else "",
+            "videos": onv.get(i, []),
+        })
+    titles = [c["title"][:40] for c in cards]
+    us, ut, _ = update_slides(updates)
+    for j, (h, t) in enumerate(zip(us, ut)):
+        cards.append({"n": len(cards)+1, "title": t, "html": h, "points": [], "note": "", "img": "", "videos": []})
+        titles.append(t)
+    deck = {"title": Path(pptx).stem, "cards": cards, "titles": titles}
+    (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
+    (out/"index.html").write_text(REFLOW.replace("__DECK__", json.dumps(deck, ensure_ascii=False)))
+    return len(cards), sum(len(c["videos"]) for c in cards)
+
+
+REFLOW = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/><title>Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:'Noto Sans KR','Poppins',system-ui,sans-serif}
+body{display:flex;background:#070a16;color:#e6edf3}
+#side{width:280px;flex:0 0 280px;height:100vh;overflow-y:auto;background:#0b1020;border-right:1px solid #1c2540;padding:22px 0}
+#side h1{font-family:Poppins;font-size:15px;font-weight:800;margin:0 20px 18px;line-height:1.4;background:linear-gradient(90deg,#22d3ee,#7b2ff7,#ff5ea0);-webkit-background-clip:text;background-clip:text;color:transparent}
+#side a{display:flex;gap:10px;align-items:center;padding:9px 20px;color:#9fb0d0;text-decoration:none;font-size:13px;border-left:3px solid transparent;transition:.15s}
+#side a:hover{background:#131a30;color:#fff}#side a.on{background:#131a30;color:#fff;border-left-color:#22d3ee}
+#side a b{font-family:Poppins;color:#445;min-width:22px}#side a.on b{color:#22d3ee}
+#scroll{flex:1;height:100vh;overflow-y:auto;scroll-snap-type:y proximity;scroll-behavior:smooth;padding:5vh 5vw}
+section{scroll-snap-align:start;min-height:90vh;display:flex;flex-direction:column;justify-content:center;margin-bottom:7vh;max-width:1100px;margin-inline:auto}
+.t{font-family:Poppins,'Noto Sans KR';font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.2;margin:0 0 22px;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.row{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:start}
+.row.solo{grid-template-columns:1fr}
+ul{margin:0;padding:0;list-style:none}
+li{position:relative;padding:12px 0 12px 26px;font-size:clamp(16px,1.6vw,21px);line-height:1.6;border-bottom:1px solid rgba(255,255,255,.06)}
+li::before{content:"";position:absolute;left:0;top:20px;width:11px;height:11px;border-radius:3px;background:linear-gradient(135deg,var(--a),var(--b))}
+.shot{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.shot img{width:100%;display:block}
+.vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px}
+.note{margin-top:22px;background:#0b1020;border:1px solid #1c2540;border-radius:14px;padding:16px 20px;color:#aebbd6;font-size:15px;line-height:1.7;white-space:pre-wrap}
+.note b{display:block;font-family:Poppins;font-size:12px;letter-spacing:.08em;color:#22d3ee;margin-bottom:6px}
+.note.empty{display:none}.solo .shot{max-width:760px;margin:0 auto}
+.html p{font-size:clamp(16px,1.7vw,22px);line-height:1.5;margin:.2em 0}
+@media(max-width:860px){.row{grid-template-columns:1fr}#side{width:64px;flex-basis:64px}#side h1,#side a span{display:none}}
+</style></head><body>
+<nav id="side"><h1 id="dt"></h1><div id="toc"></div></nav>
+<main id="scroll"></main><script>
+const D=__DECK__;
+const TH=[['#22d3ee','#7b2ff7'],['#ff5ea0','#7b2ff7'],['#3bb78f','#0b9'],['#ff8a00','#ff5ea0'],['#22d3ee','#3bb78f'],['#a6ed5d','#22d3ee']];
+dt.textContent=D.title;scrollEl=document.getElementById('scroll');toc=document.getElementById('toc');
+D.cards.forEach((c,i)=>{const t=TH[i%TH.length];let body;
+  if(c.html){body='<div class="html">'+c.html+'</div>';}
+  else{const pts=c.points.map(x=>'<li>'+x.replace(/</g,'&lt;')+'</li>').join('');
+    const vis=c.videos&&c.videos.length?'<div class="vid"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.img?'<div class="shot"><img loading="lazy" src="'+c.img+'"></div>':'');
+    const solo=pts?'':' solo';body='<div class="row'+solo+'">'+(pts?'<ul>'+pts+'</ul>':'')+vis+'</div>';}
+  scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" style="--a:'+t[0]+';--b:'+t[1]+'"><h2 class="t">'+(c.title||'').replace(/</g,'&lt;')+'</h2>'+body+'</section>');
+  const sec=scrollEl.lastElementChild;const nd=document.createElement('div');nd.className='note'+(c.note?'':' empty');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=c.note||'';nd.appendChild(sp);sec.appendChild(nd);
+  toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+(D.titles[i]||'')+'</span></a>');});
+const links=[...toc.querySelectorAll('a')];
+const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=links[+e.target.id.slice(1)];a.classList.add('on');a.scrollIntoView({block:'nearest'});}}),{root:scrollEl,threshold:.4});
+document.querySelectorAll('section').forEach(s=>ob.observe(s));
+</script></body></html>"""
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("pptx"); ap.add_argument("--out", default="docs"); ap.add_argument("--updates", default=None)
+    ap.add_argument("--reflow", action="store_true", help="web-native reinterpretation: screenshot + key points + notes")
+    ap.add_argument("--scale", type=float, default=2.0)
     a = ap.parse_args()
     if not os.path.exists(a.pptx):
         sys.exit(f"Input not found: {a.pptx}")
-    n, v = build(a.pptx, a.out, a.updates)
-    print(f"OK: {n} slides, {v} online videos -> {a.out}/")
+    if a.reflow:
+        n, v = build_reflow(a.pptx, a.out, a.scale, a.updates)
+        print(f"OK(reflow): {n} slides, {v} online videos -> {a.out}/")
+    else:
+        n, v = build(a.pptx, a.out, a.updates)
+        print(f"OK: {n} slides, {v} online videos -> {a.out}/")
