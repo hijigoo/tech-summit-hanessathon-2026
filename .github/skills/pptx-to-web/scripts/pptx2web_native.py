@@ -311,7 +311,6 @@ REFLOW = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/><title>Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <style>
 :root{--a:#22d3ee;--b:#7b2ff7}
 *{box-sizing:border-box}
@@ -346,19 +345,18 @@ li::before{content:"";position:absolute;left:0;top:21px;width:12px;height:12px;b
 <div id="bg"></div><div id="prog"></div>
 <nav id="side"><h1 id="dt"></h1><div id="toc"></div></nav>
 <main id="scroll"></main>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script><script>
+<script>
 const D=__DECK__;
 const TH=[['#22d3ee','#7b2ff7'],['#ff5ea0','#7b2ff7'],['#3bb78f','#22d3ee'],['#ff8a00','#ff5ea0'],['#22d3ee','#3bb78f'],['#a6ed5d','#22d3ee']];
 dt.textContent=D.title;scrollEl=document.getElementById('scroll');toc=document.getElementById('toc');
 D.cards.forEach((c,i)=>{const t=TH[i%TH.length];let body;
-  if(c.html){body='<div class="html" data-aos="fade-up">'+c.html+'</div>';}
-  else{const pts=c.points.map((x,k)=>'<li data-aos="fade-up" data-aos-delay="'+(k*60)+'">'+x.replace(/</g,'&lt;')+'</li>').join('');
-    const vis=c.videos&&c.videos.length?'<div class="vid" data-aos="zoom-in"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.imgs&&c.imgs.length?'<div class="shot" data-aos="zoom-in">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');
+  if(c.html){body='<div class="html">'+c.html+'</div>';}
+  else{const pts=c.points.map((x,k)=>'<li>'+x.replace(/</g,'&lt;')+'</li>').join('');
+    const vis=c.videos&&c.videos.length?'<div class="vid"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.imgs&&c.imgs.length?'<div class="shot">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');
     const solo=pts?'':' solo';body='<div class="row'+solo+'">'+(pts?'<ul>'+pts+'</ul>':'')+vis+'</div>';}
-  scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" style="--a:'+t[0]+';--b:'+t[1]+'"><h2 class="t" data-aos="fade-right">'+(c.title||'').replace(/</g,'&lt;')+'</h2>'+body+'</section>');
-  const sec=scrollEl.lastElementChild;const nd=document.createElement('div');nd.className='note'+(c.note?'':' empty');nd.setAttribute('data-aos','fade-up');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=c.note||'';nd.appendChild(sp);sec.appendChild(nd);
+  scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" style="--a:'+t[0]+';--b:'+t[1]+'"><h2 class="t">'+(c.title||'').replace(/</g,'&lt;')+'</h2>'+body+'</section>');
+  const sec=scrollEl.lastElementChild;const nd=document.createElement('div');nd.className='note'+(c.note?'':' empty');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=c.note||'';nd.appendChild(sp);sec.appendChild(nd);
   toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+(D.titles[i]||'')+'</span></a>');});
-AOS.init({duration:650,once:true,easing:'ease-out-cubic'});
 const links=[...toc.querySelectorAll('a')],prog=document.getElementById('prog');
 const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=links[+e.target.id.slice(1)];a.classList.add('on');a.scrollIntoView({block:'nearest'});}}),{root:scrollEl,threshold:.4});
 document.querySelectorAll('section').forEach(s=>ob.observe(s));

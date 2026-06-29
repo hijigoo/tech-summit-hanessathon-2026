@@ -33,9 +33,9 @@ python3 scripts/pptx2web_native.py <input.pptx> --out docs
 ## UI/디자인 (reflow)
 - **왼쪽 사이드바**: 번호+제목 목차, 현재 슬라이드 자동 하이라이트, 클릭 시 스크롤.
 - **오른쪽 본문**: 세로 스크롤(snap), 상단 스크롤 진행바, 떠다니는 메시 그라데이션 배경.
-- **AOS**(animate-on-scroll, CDN)로 제목·bullet·이미지가 스크롤 시 페이드/줌 등장.
+- **AOS 같은 스크롤-숨김 라이브러리는 쓰지 않는다**(커스텀 스크롤 컨테이너에서 트리거 실패→백지). CSS-only 등장 효과만.
 - 글래스모피즘 카드(블러), 그라데이션 제목, 6색 테마 로테이션, Sora+Noto Sans KR 폰트.
-- 외부 라이브러리는 모두 CDN(빌드 불필요): AOS 2.3.4, Google Fonts. 16:9 비고정·높이 가변.
+- 외부 라이브러리는 CDN(빌드 불필요), 16:9 비고정·높이 가변. 빌드 후 헤드리스로 렌더 검증.
 
 ## 변환 규칙 (native)
 1. python-pptx로 텍스트런(폰트크기·색·볼드·정렬), 그림, 표를 추출.
@@ -52,6 +52,8 @@ python3 scripts/pptx2web_native.py <input.pptx> --out docs
 3. **스크린샷 폴백**: 그래도 비면 LibreOffice 렌더 PNG를 본문 비주얼로 사용.
 4. **자동 검증**: 빌드 끝에 모든 카드에 본문(포인트/이미지/영상/HTML)이 있는지 확인,
    비면 `WARN: empty slides:[..]` 출력 → 어떤 입력이든 빈 페이지 0 보장.
+5. **렌더 검증(권장)**: 배포 전 headless(Playwright)로 각 섹션 `opacity`·높이·본문 수를
+   확인해 백지 슬라이드가 없는지 직접 확인한다.
 
 ## 최신 업데이트 자동 추가 (Azure 공식)
 발표 내용이 최신 상태를 유지하도록, Azure/Microsoft Foundry 공식 "What's new"를
