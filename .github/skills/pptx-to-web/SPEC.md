@@ -26,6 +26,10 @@ PowerPoint(.pptx)를 **콘텐츠 기반 웹사이트**로 변환해 GitHub Pages
 ## 대체 모드
 - 이미지 모드(`pptx2web.py`): soffice 렌더 + ffmpeg, 룩앤필 1:1, 영상 오버레이.
 
+## 최신 업데이트 (Azure 공식)
+- `fetch_updates.py`가 Microsoft Foundry 공식 What's-new(raw md)를 수집 → updates.json.
+- `pptx2web_native.py --updates`로 덱 끝에 카테고리별 "최신 업데이트" 슬라이드 추가.
+
 ## 충실도/엣지
 - 영상 0개·표 0개도 동작, 한글 보존, 50+장 처리, 결정적 출력.
 

@@ -1,0 +1,55 @@
+{
+  "source": "https://raw.githubusercontent.com/MicrosoftDocs/azure-ai-docs/main/articles/foundry/whats-new-foundry.md",
+  "fetched": "2026-06-29",
+  "groups": [
+    {
+      "category": "Azure OpenAI",
+      "items": [
+        "Quickstart: Create a provisioned throughput deployment",
+        "Determine provisioned throughput unit (PTU) sizing for a workload",
+        "Auto and direct model routing with the Responses API",
+        "Use model router with Foundry agents",
+        "Automate Azure OpenAI deployments with quota",
+        "Get started with Azure OpenAI audio generation"
+      ]
+    },
+    {
+      "category": "Foundry Agent Service",
+      "items": [
+        "Enable incoming A2A on a Foundry agent (preview)",
+        "Routines in Microsoft Foundry (preview)",
+        "Automate agents with routines (preview)",
+        "Build a voice agent with hosted agents (preview)",
+        "Add managed MCP servers powered by connector namespaces (preview)",
+        "Connect agents to Microsoft Fabric with Fabric IQ (preview)",
+        "Connect agents to Microsoft 365 with Work IQ (preview)"
+      ]
+    },
+    {
+      "category": "Evaluations and observability",
+      "items": [
+        "Rubric evaluators (preview)",
+        "Run agent evaluations with the azd CLI (preview)",
+        "Run benchmark evaluations in Microsoft Foundry (preview)",
+        "Generate a synthetic evaluation dataset (preview)",
+        "Review agent interactions with Trace Replay (preview)",
+        "Convert agent traces into evaluation datasets (preview)",
+        "Microsoft Foundry Tracing and Data Handling"
+      ]
+    },
+    {
+      "category": "Guardrails",
+      "items": [
+        "Configure guided guardrail set-up for an agent (preview)"
+      ]
+    },
+    {
+      "category": "Foundry Models and platform",
+      "items": [
+        "Govern model router deployments with Azure Policy",
+        "Instant models in Microsoft Foundry (preview)",
+        "Region availability for Foundry Models sold directly by Azure"
+      ]
+    }
+  ]
+}

@@ -100,7 +100,27 @@ def slide_title(s, n):
     return f"슬라이드 {n}"
 
 
-def build(pptx, out):
+def update_slides(updates_path):
+    """Build extra 'latest update' slide HTML + titles from updates.json."""
+    if not updates_path or not os.path.exists(updates_path):
+        return [], []
+    u = json.loads(Path(updates_path).read_text())
+    src = u.get("source", ""); fetched = u.get("fetched", "")
+    slides, titles = [], []
+    intro = ('<div class="s" style="left:6%;top:18%;width:88%;height:64%;">'
+             '<p style="font-size:6cqh;">🆕 최신 업데이트</p>'
+             f'<p style="font-size:3cqh;">출처: {html.escape(src)}</p>'
+             f'<p style="font-size:2.6cqh;">수집일 {html.escape(fetched)}</p></div>')
+    slides.append(intro); titles.append("최신 업데이트")
+    for g in u.get("groups", []):
+        lis = "".join(f'<p style="font-size:2.9cqh;">• {html.escape(it)}</p>' for it in g["items"])
+        slides.append(f'<div class="s" style="left:6%;top:10%;width:88%;height:82%;">'
+                      f'<p style="font-size:4.4cqh;color:#22d3ee;">{html.escape(g["category"])}</p>{lis}</div>')
+        titles.append("업데이트 · " + g["category"][:24])
+    return slides, titles
+
+
+def build(pptx, out, updates=None):
     out = Path(out)
     media = out/"media"
     for d in (out, media):
@@ -117,6 +137,8 @@ def build(pptx, out):
         for u in onv.get(i, []):
             parts.append(f'<div class="s vid" style="left:0;top:0;width:100%;height:100%;"><iframe src="{html.escape(u)}" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>')
         slides.append("".join(x for x in parts if x))
+    us, ut = update_slides(updates)
+    slides += us; titles += ut
     deck = {"title": Path(pptx).stem, "aspect": W/H, "slides": slides, "titles": titles}
     (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
     (out/"index.html").write_text(HTML.replace("__DECK__", json.dumps(deck, ensure_ascii=False)))
@@ -168,9 +190,9 @@ document.querySelectorAll('section').forEach(s=>ob.observe(s));
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("pptx"); ap.add_argument("--out", default="docs")
+    ap.add_argument("pptx"); ap.add_argument("--out", default="docs"); ap.add_argument("--updates", default=None)
     a = ap.parse_args()
     if not os.path.exists(a.pptx):
         sys.exit(f"Input not found: {a.pptx}")
-    n, v = build(a.pptx, a.out)
+    n, v = build(a.pptx, a.out, a.updates)
     print(f"OK: {n} slides, {v} online videos -> {a.out}/")
