@@ -13,7 +13,7 @@
     },
     {
       "title": "The AI app & agent factory",
-      "html": "<p class='lead'>Microsoft Foundry는 AI 앱과 에이전트를 만드는 <b>공장(factory)</b>입니다. 모델 선택부터 빌드·배포·운영까지 하나의 플랫폼에서 끝납니다.</p><div class='gr gr3'><div class='cd'><div class='ic'>🏗️</div><h3>App</h3><p>AI 애플리케이션을 빠르게 조립</p></div><div class='cd'><div class='ic'>🤖</div><h3>Agent</h3><p>자율 에이전트를 손쉽게 제작</p></div><div class='cd'><div class='ic'>⚡</div><h3>Factory</h3><p>대규모 양산형 워크플로우</p></div></div>",
+      "html": "<p class='lead'>모델·도구·데이터를 넣으면 AI 앱과 에이전트가 나오는 공장.</p><svg viewBox='0 0 760 200' style='width:100%;max-height:46vh'><defs><linearGradient id='g1' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#7b2ff7'/></linearGradient></defs><rect x='280' y='55' width='200' height='90' rx='16' fill='url(#g1)'/><text x='380' y='95' fill='#fff' font-size='18' font-weight='700' text-anchor='middle'>Foundry</text><text x='380' y='120' fill='#eaf' font-size='12' text-anchor='middle'>factory</text><g fill='#cdd8ee' font-size='13' text-anchor='middle'><text x='90' y='70'>Models</text><text x='90' y='105'>Tools</text><text x='90' y='140'>Data</text></g><g stroke='#22d3ee' stroke-width='2' fill='none'><path d='M150 70H280M150 105H280M150 140H280'/></g><path d='M480 100H640' stroke='#7b2ff7' stroke-width='2'/><rect x='640' y='75' width='100' height='50' rx='12' fill='rgba(255,255,255,.06)' stroke='#7b2ff7'/><text x='690' y='105' fill='#fff' font-size='13' text-anchor='middle'>App·Agent</text></svg>",
       "note": "Foundry의 핵심 비전은 'AI 앱과 에이전트를 찍어내는 공장'입니다. 누구나 빠르게 만들고 배포할 수 있게 돕습니다."
     },
     {
@@ -23,7 +23,7 @@
     },
     {
       "title": "AI Development Fundamentals",
-      "html": "<p class='lead'>Microsoft Foundry를 중심으로 6가지 기본 요소가 순환하며 AI 개발 라이프사이클을 완성합니다.</p><div class='gr gr3'><div class='cd'><div class='ic'>🧩</div><h3>Models</h3><p>다양한 프론티어·오픈 모델</p></div><div class='cd'><div class='ic'>🧠</div><h3>Knowledge & Tools</h3><p>지식·도구 연결</p></div><div class='cd'><div class='ic'>🛠️</div><h3>Orchestration & Dev</h3><p>오케스트레이션·개발도구</p></div><div class='cd'><div class='ic'>👁️</div><h3>Observability</h3><p>관측·에이전트 제어</p></div><div class='cd'><div class='ic'>🎚️</div><h3>Fine-tuning</h3><p>미세조정·커스터마이징</p></div><div class='cd'><div class='ic'>🚀</div><h3>Deployment</h3><p>배포</p></div></div>",
+      "html": "<p class='lead'>Foundry 허브를 6개 기본 요소가 둘러싼 라이프사이클.</p><svg viewBox='0 0 700 360' style='width:100%;max-height:52vh'><defs><linearGradient id='h' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#7b2ff7'/></linearGradient></defs><circle cx='350' cy='180' r='66' fill='url(#h)'/><text x='350' y='178' fill='#fff' font-size='15' font-weight='800' text-anchor='middle'>Microsoft</text><text x='350' y='198' fill='#fff' font-size='15' font-weight='800' text-anchor='middle'>Foundry</text><g font-size='13' fill='#dbe6ff' text-anchor='middle'><text x='350' y='40'>🧩 Models</text><text x='600' y='130'>🧠 Knowledge</text><text x='600' y='250'>🛠️ Orchestration</text><text x='350' y='340'>👁️ Observability</text><text x='105' y='250'>🎚️ Fine-tuning</text><text x='105' y='130'>🚀 Deployment</text></g><g stroke='#3854' stroke-width='1.5' fill='none' opacity='.5'><circle cx='350' cy='180' r='130'/></g></svg>",
       "note": "AI 개발의 기본기는 모델, 지식·도구, 오케스트레이션, 관측, 미세조정, 배포의 6가지입니다. Foundry가 이 전체를 묶어줍니다."
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "title": "모델 라우터",
-      "html": "<p class='lead'>주요 모델들에 대한 지능형 프롬프트 라우팅</p><div class='gr gr4'><div class='cd'><h3>Select models</h3><p>작업 복잡성·품질 기준 최적 모델 선택</p></div><div class='cd'><h3>Routing profiles</h3><p>라우팅 프로필·모델 하위집합 정의</p></div><div class='cd'><h3>Enterprise reliability</h3><p>내장 보안·Observability</p></div><div class='cd'><h3>Agent Services</h3><p>지능형 라우팅으로 에이전트 최적화</p></div></div><p class='lead' style='text-align:center;margin-top:18px'>GPT-4.1 단독 대비 비슷한 정확도로 <span class='stat'>최대 60%</span> 비용 절감</p>",
+      "html": "<div class='gr gr2' style='align-items:center'><svg viewBox='0 0 200 200' style='width:100%;max-height:40vh'><circle cx='100' cy='100' r='80' fill='none' stroke='#1c2540' stroke-width='22'/><circle cx='100' cy='100' r='80' fill='none' stroke='url(#h)' stroke-width='22' stroke-dasharray='301 502' stroke-linecap='round' transform='rotate(-90 100 100)'/><text x='100' y='95' fill='#fff' font-size='40' font-weight='800' text-anchor='middle'>60%</text><text x='100' y='120' fill='#9fb0d0' font-size='13' text-anchor='middle'>비용 절감</text></svg><div class='cd'><h3>모델 라우터</h3><p>작업 복잡도로 최적 모델 자동 선택, 라우팅 프로필·하위집합 정의, Azure 신뢰성, Agent Service 내장. GPT-4.1 단독 대비 비슷한 정확도.</p></div></div>",
       "note": "네 개 기둥 아래 화살표가 모이고 큰 60% 숫자가 강조된 장표입니다. 작업 복잡도에 따라 모델을 자동 선택해 GPT-4.1 단독 대비 비슷한 정확도로 최대 60% 비용을 절감합니다."
     },
     {
@@ -78,7 +78,7 @@
     },
     {
       "title": "Multi-Source AI Knowledge Bases",
-      "html": "<div class='flow'><div class='cd'><h3>Query planning</h3><p>질의 계획 수립</p></div><div class='cd'><h3>Relecloud CRM</h3><p>사용자·차량 정보</p></div><div class='cd'><h3>SharePoint</h3><p>3rd party·내부 문서</p></div><div class='cd'><h3>Web</h3><p>공개 웹 검색</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>SLM → Foundry IQ</h3><p>통합 응답</p></div></div><p class='lead' style='margin-top:18px'>여러 지식 소스를 묶어 하나의 답으로 — <b>Foundry IQ</b>.</p>",
+      "html": "<svg viewBox='0 0 720 240' style='width:100%;max-height:50vh'><defs><linearGradient id='h2' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#7b2ff7'/></linearGradient></defs><g stroke='#3a4d80' stroke-width='2' fill='none'><path d='M200 60H520M200 120H520M200 180H520'/></g><g fill='rgba(255,255,255,.06)' stroke='#22d3ee'><rect x='40' y='100' width='150' height='40' rx='10'/></g><text x='115' y='125' fill='#fff' font-size='13' text-anchor='middle'>Query planning</text><g font-size='13' fill='#dbe6ff' text-anchor='middle'><text x='360' y='52'>CRM</text><text x='360' y='112'>SharePoint</text><text x='360' y='172'>Web</text></g><rect x='520' y='90' width='150' height='60' rx='14' fill='url(#h2)'/><text x='595' y='118' fill='#fff' font-size='14' font-weight='700' text-anchor='middle'>SLM→IQ</text><text x='595' y='138' fill='#eaf' font-size='11' text-anchor='middle'>통합 응답</text></svg><p class='lead'>여러 지식 소스를 한 답으로 묶는 Foundry IQ.</p>",
       "note": "Foundry IQ는 CRM, SharePoint, 웹 등 여러 지식 소스를 묶어 하나의 답으로 만들어줍니다."
     },
     {
@@ -108,7 +108,7 @@
     },
     {
       "title": "Model Customization Options",
-      "html": "<p class='lead'>비즈니스 가치 ↑, 적응 성숙도 → 순으로 6단계.</p><div class='gr gr2'><div class='cd'><h3>01 Base model</h3><p>Foundry Models</p></div><div class='cd'><h3>02 Prompt engineering</h3><p>Declarative agents</p></div><div class='cd'><h3>03 RAG·Multi-agents</h3><p>Foundry IQ · Agent Service</p></div><div class='cd'><h3>04 Feedback/signals</h3><p>Foundry Control Plane</p></div><div class='cd'><h3>05 Fine-tuning/RAFT</h3><p>Distillation in Foundry</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>06 Continuous loop</h3><p>지속 개선 신호 루프</p></div></div>",
+      "html": "<p class='lead'>적응 성숙도가 오를수록 비즈니스 가치도 상승.</p><svg viewBox='0 0 720 300' style='width:100%;max-height:52vh'><g><line x1='60' y1='270' x2='700' y2='270' stroke='#3a4d80'/><line x1='60' y1='20' x2='60' y2='270' stroke='#3a4d80'/></g><g fill='url(#h)'><rect x='70' y='260' width='80' height='8' rx='8'/><text x='110' y='285' fill='#9fb0d0' font-size='11' text-anchor='middle'>Base</text><rect x='170' y='222' width='80' height='46' rx='8'/><text x='210' y='285' fill='#9fb0d0' font-size='11' text-anchor='middle'>Prompt</text><rect x='270' y='184' width='80' height='84' rx='8'/><text x='310' y='285' fill='#9fb0d0' font-size='11' text-anchor='middle'>RAG</text><rect x='370' y='146' width='80' height='122' rx='8'/><text x='410' y='285' fill='#9fb0d0' font-size='11' text-anchor='middle'>Signals</text><rect x='470' y='108' width='80' height='160' rx='8'/><text x='510' y='285' fill='#9fb0d0' font-size='11' text-anchor='middle'>Tune</text><rect x='570' y='70' width='80' height='198' rx='8'/><text x='610' y='285' fill='#9fb0d0' font-size='11' text-anchor='middle'>Loop</text></svg>",
       "note": "기본 모델부터 프롬프트, RAG, 피드백, 파인튜닝, 지속 개선까지 6단계로 모델을 고도화합니다."
     },
     {
