@@ -46,7 +46,7 @@ def text_html(tf):
             if r.font.italic:
                 st += "font-style:italic;"
             c = color_of(r.font)
-            if c:
+            if c and c.lower() not in ("#000000", "#1b1b1b", "#212121"):
                 st += f"color:{c};"
             runs.append(f'<span style="{st}">{html.escape(r.text)}</span>')
         if not runs:
@@ -116,21 +116,36 @@ def build(pptx, out):
 
 
 HTML = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/><title>Deck</title><style>
-*{box-sizing:border-box}html,body{margin:0;height:100%;background:#0b0e14;font-family:'Segoe UI',system-ui,'Malgun Gothic',sans-serif;color:#1b1b1b}
-#stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-#slide{position:relative;background:#fff;container-type:size;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.5)}
-.s{position:absolute;overflow:hidden}.s p{margin:0;font-size:3.2cqh;line-height:1.25}
-.s img{width:100%;height:100%;object-fit:contain}
-.s table{width:100%;height:100%;border-collapse:collapse;font-size:2.6cqh}.s td{border:1px solid #ccc;padding:.3em}
-.s.vid iframe{width:100%;height:100%;border:0}
-#bar{position:fixed;left:0;bottom:0;height:4px;background:#0078D4}#hud{position:fixed;right:12px;bottom:12px;color:#aaa;font-size:13px}
-.nav{position:fixed;top:0;bottom:0;width:16%;cursor:pointer}#prev{left:0}#next{right:0}
+<meta name="viewport" content="width=device-width,initial-scale=1"/><title>Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:'Noto Sans KR','Poppins',system-ui,sans-serif;overflow:hidden}
+body{background:#070a16;background-image:radial-gradient(1200px 600px at 15% -10%,#1b2a6b55,transparent),radial-gradient(900px 500px at 110% 120%,#7b2ff733,transparent)}
+#stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:2vmin}
+#slide{position:relative;container-type:size;overflow:hidden;border-radius:18px;color:#fff;
+  box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);transition:opacity .35s}
+#slide::before{content:"";position:absolute;inset:0;background:var(--bg);z-index:-2}
+#slide::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(60cqw 60cqw at 100% 0%,var(--a)55,transparent),radial-gradient(50cqw 50cqw at 0% 100%,var(--b)44,transparent)}
+.s{position:absolute;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.s p{margin:0 0 .25em;font-size:3.4cqh;line-height:1.3;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.s p:first-child:last-child{font-size:5cqh}
+.s img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));border-radius:10px}
+.s table{width:100%;border-collapse:separate;border-spacing:0;font-size:2.6cqh;border-radius:10px;overflow:hidden;backdrop-filter:blur(4px)}
+.s td{border:1px solid rgba(255,255,255,.18);padding:.4em .6em;background:rgba(255,255,255,.06)}
+.s tr:first-child td{background:rgba(255,255,255,.16);font-weight:700}
+.s.vid iframe{width:100%;height:100%;border:0;border-radius:12px}
+#bar{position:fixed;left:0;bottom:0;height:5px;background:linear-gradient(90deg,#22d3ee,#7b2ff7,#ff5ea0);transition:width .25s;z-index:5}
+#hud{position:fixed;right:16px;bottom:14px;color:#cbd5e1;font-family:Poppins;font-size:13px;letter-spacing:1px;background:rgba(0,0,0,.35);padding:4px 12px;border-radius:20px}
+.nav{position:fixed;top:0;bottom:0;width:16%;cursor:pointer;z-index:4}#prev{left:0}#next{right:0}
 </style></head><body><div id="stage"><div id="slide"></div></div>
 <div id="prev" class="nav"></div><div id="next" class="nav"></div><div id="bar"></div><div id="hud"></div><script>
 const D=__DECK__;let i=0;const sl=document.getElementById('slide');
+const TH=[['#0f2027','#22d3ee','#2c5364'],['#3a1c71','#ff5ea0','#d76d77'],['#0b486b','#3bb78f','#0f2027'],['#42275a','#ff5ea0','#734b6d'],['#1f1c2c','#22d3ee','#928dab'],['#16222a','#a6ed5d','#3a6073']];
 function lay(){const ar=D.aspect||16/9;let w=innerWidth,h=innerHeight,cw=w,ch=w/ar;if(ch>h){ch=h;cw=h*ar}sl.style.width=cw+'px';sl.style.height=ch+'px';}
-function show(n){i=Math.max(0,Math.min(D.slides.length-1,n));sl.innerHTML=D.slides[i];document.getElementById('bar').style.width=((i+1)/D.slides.length*100)+'%';document.getElementById('hud').textContent=(i+1)+' / '+D.slides.length;lay();}
+function show(n){i=Math.max(0,Math.min(D.slides.length-1,n));const t=TH[i%TH.length];sl.style.setProperty('--bg','linear-gradient(135deg,'+t[0]+','+t[2]+')');sl.style.setProperty('--a',t[1]);sl.style.setProperty('--b',t[2]);sl.style.opacity=0;setTimeout(()=>{sl.innerHTML=D.slides[i];sl.style.opacity=1;},120);bar.style.width=((i+1)/D.slides.length*100)+'%';hud.textContent=(i+1)+' / '+D.slides.length;lay();}
 addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))show(i+1);if(['ArrowLeft','PageUp'].includes(e.key))show(i-1);if(e.key=='f')document.documentElement.requestFullscreen();});
 next.onclick=()=>show(i+1);prev.onclick=()=>show(i-1);addEventListener('resize',lay);document.title=D.title;show(0);
 </script></body></html>"""
