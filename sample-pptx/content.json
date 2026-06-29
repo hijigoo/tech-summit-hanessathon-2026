@@ -6,8 +6,11 @@
       "divider": true,
       "note": "안녕하세요. 오늘은 Microsoft Foundry를 활용한 Agentic AI에 대해 발표하겠습니다. 발표자는 Solution Engineer Kichul Kim입니다."
     },
-    { "title": "1. Microsoft Foundry, 무엇일까요?", "divider": true,
-      "note": "먼저 Microsoft Foundry가 무엇인지부터 살펴보겠습니다." },
+    {
+      "title": "1. Microsoft Foundry, 무엇일까요?",
+      "divider": true,
+      "note": "먼저 Microsoft Foundry가 무엇인지부터 살펴보겠습니다."
+    },
     {
       "title": "The AI app & agent factory",
       "html": "<p class='lead'>Microsoft Foundry는 AI 앱과 에이전트를 만드는 <b>공장(factory)</b>입니다. 모델 선택부터 빌드·배포·운영까지 하나의 플랫폼에서 끝납니다.</p><div class='gr gr3'><div class='cd'><div class='ic'>🏗️</div><h3>App</h3><p>AI 애플리케이션을 빠르게 조립</p></div><div class='cd'><div class='ic'>🤖</div><h3>Agent</h3><p>자율 에이전트를 손쉽게 제작</p></div><div class='cd'><div class='ic'>⚡</div><h3>Factory</h3><p>대규모 양산형 워크플로우</p></div></div>",
@@ -28,17 +31,20 @@
       "html": "<div class='flow'><div class='cd' style='--a:#22d3ee;--b:#7b2ff7'><h3>Build</h3><p>Use Case 식별 → 모델·도구 리서치 → 프롬프트 테스트 → 빌드 → 지식·도구 추가 → 미세조정 → Multi-Agent 오케스트레이션</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>Optimize</h3><p>코드 커스터마이징 → 관리형 런타임 호스팅 → 에이전트 평가 → 배포</p></div><div class='cd' style='--a:#ff5ea0;--b:#ff8a00'><h3>Operate</h3><p>비용·규제·안정성 모니터링 → 위험 완화·보호 → 애플리케이션 통합</p></div></div><p class='lead' style='margin-top:18px'>각 단계는 '잘 동작하나요?' 체크로 반복(loop)됩니다.</p>",
       "note": "개발 사이클은 Build, Optimize, Operate 세 단계로 반복됩니다. 잘 동작하지 않으면 다시 빌드 단계로 돌아갑니다."
     },
-    { "title": "2. Foundry가 제공하는 서비스들", "divider": true,
-      "note": "이제 Foundry가 실제로 제공하는 서비스들을 살펴봅니다." },
+    {
+      "title": "2. Foundry가 제공하는 서비스들",
+      "divider": true,
+      "note": "이제 Foundry가 실제로 제공하는 서비스들을 살펴봅니다."
+    },
     {
       "title": "Every model. Every use case. One platform.",
       "html": "<p class='lead'>Foundry Models에는 <b>11,000+</b> 프론티어·오픈 모델이 있습니다. 모든 모델, 모든 유즈케이스, 하나의 플랫폼.</p><div class='gr gr2'><div class='cd'><h3>All Foundry Models</h3><p>통합된 접근 · Scalable deployment · Enterprise-Ready</p></div><div class='cd' style='--a:#3bb78f;--b:#22d3ee'><h3>Sold directly by Microsoft</h3><p>SLA & compliance · Reserved capacity · 비용 최적화 PTU · Safety guardrails(Default)</p></div></div><div style='margin-top:16px'><span class='pill'>Azure OpenAI</span><span class='pill'>DeepSeek</span><span class='pill'>xAI Grok</span><span class='pill'>Mistral</span><span class='pill'>Meta Llama</span><span class='pill'>Cohere</span><span class='pill'>Phi SLM</span><span class='pill'>NVIDIA</span></div>",
-      "note": "Foundry Models는 11,000개 이상의 모델을 한 플랫폼에서 제공합니다. 일부는 Microsoft가 직접 SLA와 보안을 보장합니다."
+      "note": "이 장표는 11,000개 넘는 모델 로고가 한 화면을 채운 카탈로그입니다. Azure OpenAI·Llama·Mistral·DeepSeek 등 모든 프론티어·오픈 모델을 하나의 플랫폼에서 쓰며, 일부는 MS가 직접 SLA·보안을 보장합니다."
     },
     {
       "title": "모델 라우터",
       "html": "<p class='lead'>주요 모델들에 대한 지능형 프롬프트 라우팅</p><div class='gr gr4'><div class='cd'><h3>Select models</h3><p>작업 복잡성·품질 기준 최적 모델 선택</p></div><div class='cd'><h3>Routing profiles</h3><p>라우팅 프로필·모델 하위집합 정의</p></div><div class='cd'><h3>Enterprise reliability</h3><p>내장 보안·Observability</p></div><div class='cd'><h3>Agent Services</h3><p>지능형 라우팅으로 에이전트 최적화</p></div></div><p class='lead' style='text-align:center;margin-top:18px'>GPT-4.1 단독 대비 비슷한 정확도로 <span class='stat'>최대 60%</span> 비용 절감</p>",
-      "note": "모델 라우터는 작업마다 최적 모델로 자동 분기시켜, GPT-4.1 단독 대비 최대 60% 비용을 줄이면서 정확도는 유지합니다."
+      "note": "네 개 기둥 아래 화살표가 모이고 큰 60% 숫자가 강조된 장표입니다. 작업 복잡도에 따라 모델을 자동 선택해 GPT-4.1 단독 대비 비슷한 정확도로 최대 60% 비용을 절감합니다."
     },
     {
       "title": "모델 라우터 동작 구조",
@@ -48,7 +54,7 @@
     {
       "title": "Agent Orchestration",
       "html": "<p class='lead'>데이터·도구를 가로질러 계획·추론·행동하는 멀티 에이전트 워크플로우를 오케스트레이션합니다.</p><div class='gr gr3'><div class='cd'><h3>모델 선택</h3><p>gpt-4.1-mini 등</p></div><div class='cd'><h3>프롬프트 작성</h3><p>Instructions</p></div><div class='cd'><h3>도구 연결</h3><p>Tools</p></div><div class='cd'><h3>지식 연결</h3><p>Knowledge</p></div><div class='cd'><h3>메모리·가드레일</h3><p>Memory · Guardrails</p></div><div class='cd'><h3>테스트</h3><p>Playground 채팅</p></div></div>",
-      "note": "Foundry 에이전트는 모델·프롬프트·도구·지식·메모리·가드레일을 연결하고 Playground에서 바로 테스트할 수 있습니다."
+      "note": "왼쪽 설정 패널에 모델·프롬프트·도구·지식·메모리·가드레일, 오른쪽엔 채팅 테스트 창이 있는 화면입니다. 멀티 에이전트 워크플로우를 구성하고 Playground에서 바로 검증합니다."
     },
     {
       "title": "Hosted Agent",
@@ -60,8 +66,11 @@
       "html": "<p class='lead'>Foundry로 만든 에이전트를 M365 Copilot과 Teams Chat에 즉시 게시합니다.</p><div class='flow'><div class='cd'><h3>Foundry Agent Service</h3><p>빌드 완료</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>M365 / A365</h3><p>Publish to Teams & Microsoft 365 Copilot</p></div></div>",
       "note": "원클릭 게시로 에이전트를 M365 Copilot과 Teams에 즉시 배포할 수 있습니다."
     },
-    { "title": "엣지 라우터에서 CTL11 LED는 무엇을 하나요?", "divider": true,
-      "note": "현장 시나리오를 예로 들어봅니다. 엣지 라우터의 CTL11 LED 질문입니다." },
+    {
+      "title": "엣지 라우터에서 CTL11 LED는 무엇을 하나요?",
+      "divider": true,
+      "note": "현장 시나리오를 예로 들어봅니다. 엣지 라우터의 CTL11 LED 질문입니다."
+    },
     {
       "title": "현장 질의 — 멀티소스 지식이 필요한 순간",
       "html": "<p class='lead'>\"P4324 장비가 멈추고 CTL11 경고등이 빨간불, UL 817 라벨이 보이는데 부품 교체 가능할까요?\"</p><div class='gr gr2'><div class='cd'><h3>장비 매뉴얼</h3><p>Fabric OneLake에 통합</p></div><div class='cd'><h3>전기 표준</h3><p>웹에서 확인 가능</p></div><div class='cd'><h3>사내 정책·문서</h3><p>SharePoint 관리</p></div><div class='cd'><h3>사용자 오타</h3><p>의도 해석 필요</p></div></div>",
@@ -75,7 +84,7 @@
     {
       "title": "MCP-enabled tools in Microsoft Foundry",
       "html": "<p class='lead'>에이전트는 여러 도구를 순차적으로 연결해 작업을 수행합니다. <b>1,404개</b> 도구.</p><div class='gr gr3'><div class='cd'><h3>Configured Tools</h3><p>구성형 도구</p></div><div class='cd'><h3>Catalog Tools</h3><p>카탈로그 도구</p></div><div class='cd'><h3>Custom tools</h3><p>커스텀 도구</p></div></div><div style='margin-top:14px'><span class='pill'>Azure Cosmos DB</span><span class='pill'>GitHub</span><span class='pill'>Hugging Face</span><span class='pill'>Azure SQL</span><span class='pill'>Elasticsearch</span><span class='pill'>MCP Remote/Local</span></div>",
-      "note": "Foundry에는 1,400개가 넘는 MCP 도구가 있어, 구성·카탈로그·커스텀 도구를 자유롭게 연결합니다."
+      "note": "1,404개 도구 목록과 Configured/Catalog/Custom 3분류 칩이 보입니다. 에이전트가 MCP 도구를 순차로 연결해 작업을 수행합니다."
     },
     {
       "title": "Fine-tuning",
@@ -90,7 +99,7 @@
     {
       "title": "Evaluators",
       "html": "<div class='gr gr3'><div class='cd'><h3>Quality</h3><p>Document Retrieval · Groundedness · Relevance · Coherence · Fluency · NLP Metrics</p></div><div class='cd' style='--a:#ff5ea0;--b:#7b2ff7'><h3>Risk & Safety</h3><p>Jailbreaks · Hate · Violence · Self-Harm · Code Vulnerability · Data Leakage</p></div><div class='cd' style='--a:#3bb78f;--b:#22d3ee'><h3>Agents</h3><p>Intent Resolution · Tool Accuracy · Task Adherence · Completion <span class='tag'>NEW</span></p></div></div><p class='lead' style='text-align:center;margin-top:16px'>+ Custom Evaluators</p>",
-      "note": "평가기는 품질, 위험·안전, 에이전트 동작 세 영역을 측정하며 커스텀 평가기도 추가할 수 있습니다."
+      "note": "Quality·Risk&Safety·Agents 세 컬럼에 평가 항목이 가득하고 NEW 배지가 붙어 있습니다. 커스텀 평가기까지 더해 품질·안전·동작을 정량 측정합니다."
     },
     {
       "title": "Agent 평가 예시 — 일기예보 제공",
@@ -102,7 +111,10 @@
       "html": "<p class='lead'>비즈니스 가치 ↑, 적응 성숙도 → 순으로 6단계.</p><div class='gr gr2'><div class='cd'><h3>01 Base model</h3><p>Foundry Models</p></div><div class='cd'><h3>02 Prompt engineering</h3><p>Declarative agents</p></div><div class='cd'><h3>03 RAG·Multi-agents</h3><p>Foundry IQ · Agent Service</p></div><div class='cd'><h3>04 Feedback/signals</h3><p>Foundry Control Plane</p></div><div class='cd'><h3>05 Fine-tuning/RAFT</h3><p>Distillation in Foundry</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><h3>06 Continuous loop</h3><p>지속 개선 신호 루프</p></div></div>",
       "note": "기본 모델부터 프롬프트, RAG, 피드백, 파인튜닝, 지속 개선까지 6단계로 모델을 고도화합니다."
     },
-    { "title": "감사합니다", "divider": true,
-      "note": "이상으로 발표를 마칩니다. 감사합니다." }
+    {
+      "title": "감사합니다",
+      "divider": true,
+      "note": "이상으로 발표를 마칩니다. 감사합니다."
+    }
   ]
 }

@@ -23,18 +23,20 @@ soffice --headless --convert-to pdf <input.pptx> --outdir /tmp
 mkdir -p /tmp/shots
 python3 -c "import fitz;d=fitz.open('/tmp/<name>.pdf');[p.get_pixmap(dpi=110).save(f'/tmp/shots/s{i+1:02d}.png') for i,p in enumerate(d)]"
 ```
-### 2) PNG를 직접 보고 재해석
-`/tmp/shots/s01.png`부터 끝까지 **view 도구로 직접 본다**(병렬로 여러 장 읽기). 각 장의
-제목·핵심 메시지·다이어그램 구조·발표 의도를 파악해 `sample-pptx/content.json`에 작성:
+### 2) PNG를 보고 ① 발표자 노트 작성 → ② 노트+스크린샷으로 HTML 작성
+3단계 파이프라인: **스크린샷 → 노트 → HTML**. 먼저 각 PNG를 view로 보고 그 장표를
+설명하는 발표자 노트(2~3문장)를 쓴다. 그 노트를 근거로 화면 구성을 HTML로 재해석한다.
+`/tmp/shots/s01.png`부터 끝까지 **view 도구로 직접 본다**(병렬로 여러 장). 결과를
+`sample-pptx/content.json`에 작성:
 ```json
 {"title":"덱 제목","slides":[
   {"title":"표지","divider":true,"note":"발표 스크립트"},
-  {"title":"슬라이드 제목","html":"<p class='lead'>요약</p><div class='gr gr3'>…</div>","note":"발표 스크립트"}
+  {"title":"슬라이드 제목","html":"<p class='lead'>요약</p><div class='gr gr3'>…</div>","note":"화면을 설명하는 발표자 노트"}
 ]}
 ```
-- **divider**: 섹션 표지/타이틀/마무리(텍스트만 큰 장표) → 그라데이션 hero.
-- **html**: 내용 장표 → 재해석한 본문. 스크린샷을 절대 임베드하지 않고 깔끔히 새로 만든다(1:1 복제 X).
-- **note**: 슬라이드 아래 "발표 스크립트" 다크카드로 표시.
+- **note 먼저**: 스크린샷을 보고 "무엇이 보이는지+핵심 메시지"를 노트로 기술 → 화면 아래 표시.
+- **html 다음**: 그 노트가 말하는 구조를 깔끔한 카드/플로우로 재현(스크린샷 임베드 X, 1:1 복제 X).
+- **divider**: 섹션 표지/타이틀/마무리 → 그라데이션 hero.
 
 ### 3) 빌드 + 4) 검증 + 5) 배포
 ```bash
