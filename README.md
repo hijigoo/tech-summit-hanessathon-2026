@@ -1,9 +1,11 @@
-# 발표가 끝나도 늙지 않는 PPT — 말 한마디로 갱신되는 라이브 웹 데모를 만드는 Copilot Skill
+# 발표가 끝나도 늙지 않는 PPT — 말 한마디로 갱신되는 라이브 웹 데모를 만드는 **Azure 특화 Copilot Skill**
 
-> 하네스톤 2026 · **트랙2** · 제출물: **Copilot Skill** (`skills/pptx-to-web/`)
+> 하네스톤 2026 · **트랙2** · 제출물: **Azure 특화 Copilot Skill** (`skills/pptx-to-web/`)
 
 **PPT는 만드는 순간 낡습니다.** 자료를 고치려면 파일 열고, 다시 export하고, 메일에 첨부하고, 버전이 엉킵니다.
 `pptx-to-web`은 PPTX를 **웹으로 바꿔** GitHub Copilot에게 한마디만 하면 **최신 정보로 갱신**되고, 고객에겐 **URL 하나로 즉시 전달**됩니다.
+
+> **🟦 Azure 특화 스킬:** 변환만 하는 게 아니라, 빌드할 때마다 **Azure·Microsoft Foundry 공식 "What's new"를 자동 수집**해 마지막 슬라이드에 붙입니다. 제품 데모·발표자료가 항상 **최신 Azure 기능**을 반영 — Azure 영업·솔루션 데모에 최적화된 Copilot Skill입니다.
 
 🔗 **이 스킬이 자동 생성한 결과:** https://hijigoo.github.io/tech-summit-hanessathon-2026/
 
@@ -27,7 +29,7 @@
 |---|---|
 | 수정할 때마다 파일 열고 재export·재첨부 | **Copilot에 한마디 → 사이트 자동 갱신·재배포** |
 | 메일 첨부·버전 충돌·"최신본 어디?" | **URL 하나** — 누구나 같은 최신본 |
-| 발표 후 내용이 곧 구식 | **Azure/Foundry "What's new" 자동 반영** |
+| 발표 후 내용이 곧 구식 | **🟦 Azure/Foundry "What's new" 자동 반영** (Azure 특화) |
 | 디자인·빈 장표 수작업 | **AI 재해석 다이어그램 · 빈 슬라이드 0 자동 검증** |
 
 ## 동작 방식 (스킬 하나로 6단계)
