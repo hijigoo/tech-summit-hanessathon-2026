@@ -8,19 +8,19 @@
 🔗 **이 스킬이 자동 생성한 결과:** https://hijigoo.github.io/tech-summit-hanessathon-2026/
 
 ## 한눈에 보이는 효과: Before → After
-정적인 슬라이드 한 장이 **다이어그램 중심 웹 슬라이드**로 재해석됩니다. (스킬 호출 한 번, 사람 손 0)
+정적인 PPT 한 장이 **목차·다이어그램·실제 UI·발표 스크립트까지 갖춘 웹 슬라이드**로 재해석됩니다. (스킬 호출 한 번, 사람 손 0)
 
-| Before — PPTX 원본 | After — 자동 생성 웹 |
-|---|---|
+**텍스트 카드 → Mermaid 다이어그램**
+| Before — PPTX 원본 | After — 자동 생성 웹 (Mermaid) |
+|:--:|:--:|
 | ![before](docs/readme/before.png) | ![after](docs/readme/after.png) |
+| 단순 박스 4개·하단 캡션 | 라우터 분기·병합 흐름도 + Challenge/Opportunity 카드 + 발표 스크립트 |
+
+**평면 스크린샷 → 실제 제품 UI 임베드**
+| Before — PPTX 원본 | After — 자동 생성 웹 (실 UI) |
+|:--:|:--:|
 | ![before2](docs/readme/before2.png) | ![after2](docs/readme/after2.png) |
-
-## 텍스트 슬라이드 → 다이어그램으로 자동 재해석
-복잡한 흐름은 **간단한 Mermaid 다이어그램**으로, 디테일은 카드로 함께 — 빌더가 다크 테마·CDN까지 자동 처리합니다.
-
-| 모델 라우터 동작 | Build → Optimize → Operate |
-|---|---|
-| ![diagram1](docs/readme/diagram1.png) | ![diagram2](docs/readme/diagram2.png) |
+| 캡처 한 장 붙여넣기 | 좌측 목차 + 요점 카드 + 원본 UI 그대로 임베드(1,404 도구) |
 
 ## 왜 효과적인가
 | 기존 방식 (PPTX) | pptx-to-web |

@@ -48,7 +48,7 @@
   },
   {
    "title": "모델 라우터 동작 구조",
-   "html": "<div class='gr gr2'><div class='cd'><h3>Challenge</h3><p>적합한 LLM 선택은 어렵고, 단일 LLM에 고집하기 쉽다.</p></div><div class='cd' style='--a:#a6ed5d;--b:#22d3ee'><h3>Opportunity</h3><p>스마트 라우팅은 품질 유지+비용 최적화. UX 저하 없이 절감.</p></div></div><pre class='mermaid' style='margin-top:8px'>flowchart LR\nI[입력 질문/쿼리]-->R{모델 라우터}\nR-->N[GPT-4.1-nano]\nR-->M[GPT-4.1-mini]\nR-->O[출력 Response]\nN-->O\nM-->O\n</pre>",
+   "html": "<div class='gr gr2'><div class='cd'><h3>Challenge</h3><p>적합한 LLM 선택은 어렵고, 단일 LLM에 고집하기 쉽다.</p></div><div class='cd' style='--a:#a6ed5d;--b:#22d3ee'><h3>Opportunity</h3><p>스마트 라우팅은 품질 유지+비용 최적화. UX 저하 없이 절감.</p></div></div><pre class='mermaid' style='margin-top:8px'>flowchart LR\nI[입력]-->R{라우터}\nR-->N[GPT-4.1-nano]\nR-->M[GPT-4.1-mini]\nR-->O[출력]\nN-->O\nM-->O\n</pre>",
    "note": "동작 구조는 3단계입니다. 사용자가 간단한 질문이든 복잡한 일정 계획이든 API로 호출하면, 라우터가 입력 매개변수를 평가해 GPT-4.1-nano·mini 등으로 동적 라우팅합니다. 쉬운 건 작은 모델, 어려운 건 큰 모델로 보내 비용과 품질을 동시에 잡습니다. 단일 LLM 고집의 한계를 스마트 라우팅으로 푸는 게 핵심입니다."
   },
   {
