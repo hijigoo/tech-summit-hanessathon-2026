@@ -395,6 +395,7 @@ section.divider{min-height:80vh;align-items:center}
 .t,.html,.row,.dvr{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
 section.in .t,section.in .html,section.in .row,section.in .dvr{opacity:1;transform:none}
 section.in .t{transition-delay:.05s}section.in .html,section.in .row{transition-delay:.14s}
+.mer{margin:6px auto 0;max-width:920px;text-align:center}.mer svg{max-width:100%;height:auto;filter:drop-shadow(0 14px 40px rgba(0,0,0,.45))}
 @media(max-width:860px){.row{grid-template-columns:1fr}#side{width:62px;flex-basis:62px}#side h1,#side a span{display:none}#prog{left:62px}}
 </style></head><body>
 <div id="bg"></div><div id="prog"></div>
@@ -419,6 +420,13 @@ const links=[...toc.querySelectorAll('a')],prog=document.getElementById('prog');
 const ob=new IntersectionObserver(es=>es.forEach(e=>{e.target.classList.toggle('in',e.isIntersecting);if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=links[+e.target.id.slice(1)];a.classList.add('on');a.scrollIntoView({block:'nearest'});}}),{root:scrollEl,threshold:.4});
 document.querySelectorAll('section').forEach(s=>ob.observe(s));
 scrollEl.addEventListener('scroll',()=>{prog.style.transform='scaleX('+(scrollEl.scrollTop/(scrollEl.scrollHeight-scrollEl.clientHeight||1))+')';});
+</script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:'base',themeVariables:{
+ fontFamily:"'Noto Sans KR',sans-serif",primaryColor:'#131a30',primaryTextColor:'#e6edf3',primaryBorderColor:'#22d3ee',
+ lineColor:'#7b2ff7',secondaryColor:'#1a2342',tertiaryColor:'#0b1020',clusterBkg:'#0b1020',clusterBorder:'#1c2540'}});
+mermaid.run({nodes:document.querySelectorAll('.mermaid')});
 </script></body></html>"""
 
 
