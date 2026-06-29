@@ -93,6 +93,13 @@ def online_videos(pptx):
     return out
 
 
+def slide_title(s, n):
+    for sh in s.shapes:
+        if sh.has_text_frame and sh.text_frame.text.strip():
+            return re.sub(r"\s+", " ", sh.text_frame.text.strip())[:40]
+    return f"슬라이드 {n}"
+
+
 def build(pptx, out):
     out = Path(out)
     media = out/"media"
@@ -103,13 +110,14 @@ def build(pptx, out):
     p = Presentation(pptx)
     W, H = p.slide_width, p.slide_height
     onv = online_videos(pptx)
-    slides = []
+    slides, titles = [], []
     for i, s in enumerate(p.slides):
+        titles.append(slide_title(s, i+1))
         parts = [shape_div(sh, W, H, media) for sh in s.shapes]
         for u in onv.get(i, []):
             parts.append(f'<div class="s vid" style="left:0;top:0;width:100%;height:100%;"><iframe src="{html.escape(u)}" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>')
         slides.append("".join(x for x in parts if x))
-    deck = {"title": Path(pptx).stem, "aspect": W/H, "slides": slides}
+    deck = {"title": Path(pptx).stem, "aspect": W/H, "slides": slides, "titles": titles}
     (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
     (out/"index.html").write_text(HTML.replace("__DECK__", json.dumps(deck, ensure_ascii=False)))
     return len(slides), len(onv)
@@ -121,33 +129,41 @@ HTML = r"""<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:'Noto Sans KR','Poppins',system-ui,sans-serif;overflow:hidden}
-body{background:#070a16;background-image:radial-gradient(1200px 600px at 15% -10%,#1b2a6b55,transparent),radial-gradient(900px 500px at 110% 120%,#7b2ff733,transparent)}
-#stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:2vmin}
-#slide{position:relative;container-type:size;overflow:hidden;border-radius:18px;color:#fff;
-  box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06);transition:opacity .35s}
-#slide::before{content:"";position:absolute;inset:0;background:var(--bg);z-index:-2}
-#slide::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:radial-gradient(60cqw 60cqw at 100% 0%,var(--a)55,transparent),radial-gradient(50cqw 50cqw at 0% 100%,var(--b)44,transparent)}
+html,body{margin:0;height:100%;font-family:'Noto Sans KR','Poppins',system-ui,sans-serif}
+body{display:flex;background:#070a16;color:#e6edf3}
+#side{width:280px;flex:0 0 280px;height:100vh;overflow-y:auto;background:#0b1020;border-right:1px solid #1c2540;padding:22px 0}
+#side h1{font-family:Poppins;font-size:15px;font-weight:800;margin:0 20px 18px;line-height:1.4;background:linear-gradient(90deg,#22d3ee,#7b2ff7,#ff5ea0);-webkit-background-clip:text;background-clip:text;color:transparent}
+#side a{display:flex;gap:10px;align-items:center;padding:9px 20px;color:#9fb0d0;text-decoration:none;font-size:13px;border-left:3px solid transparent;transition:.15s}
+#side a:hover{background:#131a30;color:#fff}
+#side a.on{background:#131a30;color:#fff;border-left-color:#22d3ee}
+#side a b{font-family:Poppins;color:#445;min-width:22px}#side a.on b{color:#22d3ee}
+#scroll{flex:1;height:100vh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth;padding:4vh 4vw}
+section{scroll-snap-align:start;min-height:92vh;display:flex;align-items:center;justify-content:center;margin-bottom:4vh}
+.slide{position:relative;width:100%;max-width:1280px;aspect-ratio:var(--ar,16/9);container-type:size;color:#fff;border-radius:18px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06)}
+.slide::before{content:"";position:absolute;inset:0;background:var(--bg);z-index:-2}
+.slide::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60cqw 60cqw at 100% 0%,var(--a)55,transparent),radial-gradient(50cqw 50cqw at 0% 100%,var(--b)44,transparent)}
 .s{position:absolute;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
 .s p{margin:0 0 .25em;font-size:3.4cqh;line-height:1.3;text-shadow:0 2px 12px rgba(0,0,0,.35)}
 .s p:first-child:last-child{font-size:5cqh}
 .s img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));border-radius:10px}
-.s table{width:100%;border-collapse:separate;border-spacing:0;font-size:2.6cqh;border-radius:10px;overflow:hidden;backdrop-filter:blur(4px)}
+.s table{width:100%;border-collapse:separate;border-spacing:0;font-size:2.6cqh;border-radius:10px;overflow:hidden}
 .s td{border:1px solid rgba(255,255,255,.18);padding:.4em .6em;background:rgba(255,255,255,.06)}
 .s tr:first-child td{background:rgba(255,255,255,.16);font-weight:700}
 .s.vid iframe{width:100%;height:100%;border:0;border-radius:12px}
-#bar{position:fixed;left:0;bottom:0;height:5px;background:linear-gradient(90deg,#22d3ee,#7b2ff7,#ff5ea0);transition:width .25s;z-index:5}
-#hud{position:fixed;right:16px;bottom:14px;color:#cbd5e1;font-family:Poppins;font-size:13px;letter-spacing:1px;background:rgba(0,0,0,.35);padding:4px 12px;border-radius:20px}
-.nav{position:fixed;top:0;bottom:0;width:16%;cursor:pointer;z-index:4}#prev{left:0}#next{right:0}
-</style></head><body><div id="stage"><div id="slide"></div></div>
-<div id="prev" class="nav"></div><div id="next" class="nav"></div><div id="bar"></div><div id="hud"></div><script>
-const D=__DECK__;let i=0;const sl=document.getElementById('slide');
+@media(max-width:760px){#side{width:64px;flex-basis:64px}#side h1,#side a span{display:none}}
+</style></head><body>
+<nav id="side"><h1 id="dt"></h1><div id="toc"></div></nav>
+<main id="scroll"></main><script>
+const D=__DECK__;
 const TH=[['#0f2027','#22d3ee','#2c5364'],['#3a1c71','#ff5ea0','#d76d77'],['#0b486b','#3bb78f','#0f2027'],['#42275a','#ff5ea0','#734b6d'],['#1f1c2c','#22d3ee','#928dab'],['#16222a','#a6ed5d','#3a6073']];
-function lay(){const ar=D.aspect||16/9;let w=innerWidth,h=innerHeight,cw=w,ch=w/ar;if(ch>h){ch=h;cw=h*ar}sl.style.width=cw+'px';sl.style.height=ch+'px';}
-function show(n){i=Math.max(0,Math.min(D.slides.length-1,n));const t=TH[i%TH.length];sl.style.setProperty('--bg','linear-gradient(135deg,'+t[0]+','+t[2]+')');sl.style.setProperty('--a',t[1]);sl.style.setProperty('--b',t[2]);sl.style.opacity=0;setTimeout(()=>{sl.innerHTML=D.slides[i];sl.style.opacity=1;},120);bar.style.width=((i+1)/D.slides.length*100)+'%';hud.textContent=(i+1)+' / '+D.slides.length;lay();}
-addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))show(i+1);if(['ArrowLeft','PageUp'].includes(e.key))show(i-1);if(e.key=='f')document.documentElement.requestFullscreen();});
-next.onclick=()=>show(i+1);prev.onclick=()=>show(i-1);addEventListener('resize',lay);document.title=D.title;show(0);
+dt.textContent=D.title;
+scrollEl=document.getElementById('scroll');toc=document.getElementById('toc');
+D.slides.forEach((h,i)=>{const t=TH[i%TH.length];
+  scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'"><div class="slide" style="--ar:'+(D.aspect||16/9)+';--bg:linear-gradient(135deg,'+t[0]+','+t[2]+');--a:'+t[1]+';--b:'+t[2]+'">'+h+'</div></section>');
+  toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'" data-i="'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+(D.titles[i]||'')+'</span></a>');});
+const links=[...toc.querySelectorAll('a')];
+const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=links[+e.target.id.slice(1)];a.classList.add('on');a.scrollIntoView({block:'nearest'});}}),{root:scrollEl,threshold:.5});
+document.querySelectorAll('section').forEach(s=>ob.observe(s));
 </script></body></html>"""
 
 if __name__ == "__main__":
