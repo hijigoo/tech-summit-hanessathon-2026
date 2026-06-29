@@ -1,46 +1,45 @@
 ---
 name: pptx-to-web
-description: Convert a PowerPoint (.pptx) into a static HTML deck that preserves the original look-and-feel, plays embedded videos, and deploys to GitHub Pages. WHEN: "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "deploy slides to pages", "pptx html 변환".
+description: Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — left sidebar table of contents, vertical scroll-snap slides, selectable text, images, tables, and embedded/YouTube videos — then deploy to GitHub Pages. WHEN: "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "deploy slides to pages", "pptx html 변환".
 ---
 
 # pptx-to-web
 
-PPTX를 GitHub Pages용 정적 HTML 덱으로 변환한다. 원본 룩앤필을 그대로
-보존하고, 임베디드 동영상은 브라우저에서 재생되도록 변환·오버레이한다.
+PPTX를 **콘텐츠 기반 웹사이트**로 변환한다. 스크린샷이 아니라 슬라이드 안의
+텍스트·이미지·표·영상을 추출해 진짜 HTML/CSS로 재구성한다. 결과는 왼쪽 목차
+사이드바 + 오른쪽 세로 스크롤(스냅) 형태의 컬러풀한 정적 사이트이며 GitHub
+Pages에 게시한다.
 
-## 요구 도구
-- `soffice` (LibreOffice) — 슬라이드 고충실도 렌더
-- python: `python-pptx`, `PyMuPDF` (`pip install -r scripts/requirements.txt`)
-- `ffmpeg` (선택) — .mov 등 비호환 코덱을 mp4로 변환
-
-## 사용법
-콘텐츠 기반(권장, 텍스트 선택가능·웹 네이티브):
+## 기본 변환 (권장: 콘텐츠 기반)
 ```bash
+pip install -r scripts/requirements.txt   # python-pptx, PyMuPDF
 python3 scripts/pptx2web_native.py <input.pptx> --out docs
 ```
-이미지 기반(룩앤필 1:1 보존, 텍스트는 이미지):
+- 텍스트 선택·검색 가능, 이미지/표/YouTube 임베드, 슬라이드별 제목 자동 목차.
+- 출력: `docs/index.html`, `docs/media/*`, `docs/deck.json`.
+
+## UI/디자인
+- **왼쪽 사이드바**: 번호+제목 목차, 현재 슬라이드 자동 하이라이트, 클릭 시 스크롤.
+- **오른쪽 본문**: 위→아래 세로 스크롤, `scroll-snap`으로 한 장씩 정렬.
+- 슬라이드별 그라데이션 배경(6테마 로테이션), 화이트 타이포, 글래스 표,
+  컬러 진행감, 16:9 카드, 모바일 사이드바 축소. 한글 웹폰트(Noto Sans KR).
+
+## 변환 규칙 (native)
+1. python-pptx로 텍스트런(폰트크기·색·볼드·정렬), 그림, 표를 추출.
+2. EMU 좌표를 슬라이드 대비 %로 환산해 absolute 배치, 폰트는 `cqh` 반응형.
+3. 그림은 blob 추출, 표는 `<table>`, 어두운 글자색은 화이트로 치환(가독성).
+4. 슬라이드 rels의 외부 링크(YouTube/Vimeo)는 `<iframe>`으로 임베드.
+5. 슬라이드 제목 = 첫 텍스트(공백/제어문자 정리) → 사이드바 목차.
+
+## 이미지 모드 (룩앤필 1:1, 텍스트는 이미지)
+원본 디자인을 픽셀 그대로 보존하고 영상을 오버레이하려면:
 ```bash
-python3 scripts/pptx2web.py <input.pptx> --out docs --scale 2.0
+python3 scripts/pptx2web.py <input.pptx> --out docs --scale 2.0   # soffice+ffmpeg 필요
 ```
-- `docs/index.html` 덱, `docs/slides/*.png`, `docs/media/*`, `docs/deck.json` 생성.
-- 슬라이드 ←/→·스페이스·클릭 이동, `f` 풀스크린, 하단 진행바.
-
-## 동작
-1. soffice로 pptx→pdf, PyMuPDF로 페이지를 2배율 PNG(룩앤필 보존).
-2. python-pptx로 슬라이드 크기 + 영상 shape 비율좌표 추출.
-3. zip에서 영상/오디오 추출, 비호환 코덱은 ffmpeg로 mp4 변환.
-4. 슬라이드 = 이미지 배경 + 영상 위치에 `<video>` 절대배치 오버레이.
-
-## 동작 (native, 콘텐츠 기반)
-1. python-pptx로 텍스트런(폰트·크기·색·정렬), 그림, 표를 추출.
-2. EMU 좌표를 %로 환산해 absolute 배치, 폰트 크기는 `cqh`로 반응형.
-3. 그림은 blob 추출, 표는 `<table>`, 온라인 영상(YouTube)은 `<iframe>`.
-4. 텍스트가 실제 HTML이라 선택·검색·SEO·접근성 확보.
 
 ## GitHub Pages 배포
-- 출력 폴더를 `docs/`로 두고 Pages를 main /docs로 설정하거나,
-  `.github/workflows/pages.yml`로 자동 배포.
-- `docs/.nojekyll`가 있어 `_`/대용량 에셋도 그대로 서빙.
+- Pages를 `main /docs`로 설정하거나 `.github/workflows/pages.yml`로 자동 배포.
+- `docs/.nojekyll` 포함. 변환 후 `git push`만 하면 갱신.
 
 ## 검증 체크리스트
-- 슬라이드 수 = 원본, 한글 폰트 보존, 영상 슬라이드 재생, 50+장 OK, 영상 0개도 OK.
+- 슬라이드 수=원본, 한글 보존, 목차 동기화, 표/이미지/유튜브 표시, 영상 0개도 OK.
