@@ -48,13 +48,21 @@
 | `scripts/verify.js` | headless 렌더로 빈 슬라이드 0 검증 |
 | `templates/` | 컴포넌트 예시 + 완성 덱 레퍼런스 |
 
-## 사용
-```bash
-S=skills/pptx-to-web
-pip install -r $S/scripts/requirements.txt
-python3 $S/scripts/capture.py deck.pptx --out /tmp/shots
-python3 $S/scripts/pptx2web_native.py --content content.json --updates docs/updates.json --out docs
-```
-이후 내용 변경은 Copilot에게 요청만 하면 사이트가 자동 갱신됩니다.
+## 사용 — Copilot에 스킬 적용
+파일을 직접 돌리는 게 아니라, 이 스킬을 Copilot에 얹고 **자연어로 시키면** 됩니다.
+
+1. **스킬 설치** — `skills/pptx-to-web/` 폴더를 Copilot 스킬 경로에 둡니다.
+   - 프로젝트: 레포의 `.github/skills/`
+   - 사용자 전역: `~/.copilot/skills/`
+   ```bash
+   cp -r skills/pptx-to-web ~/.copilot/skills/
+   ```
+2. **한마디로 호출** — 이후 Copilot에 그냥 말하면 스킬이 자동 발동합니다.
+   > "이 pptx 웹으로 바꿔서 Pages에 올려줘"
+   > "발표자료 최신 Foundry 업데이트 반영해서 다시 배포해줘"
+   > "9번 장표를 다이어그램으로 다시 그려줘"
+3. Copilot이 캡처 → 재해석 → 빌드 → 검증 → 배포까지 알아서 수행합니다. 내용 갱신도 **요청 한마디**면 끝.
+
+> 트리거 키워드: "pptx to web", "파워포인트 웹으로", "장표 재해석", "발표자료 웹버전", "최신 업데이트 반영", "pages에 배포".
 
 **활용 대상:** 최신 정보를 자주 반영해 고객에게 발표·공유해야 하는 SE·세일즈·교육자.
