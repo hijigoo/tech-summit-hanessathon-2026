@@ -1,6 +1,6 @@
 ---
 name: pptx-to-web
-description: Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — screenshots each slide then reinterprets title/key-points/notes into a web-native layout (variable height, not pixel-for-pixel), with left sidebar TOC, vertical scroll, images, tables, embedded/YouTube videos, speaker notes below each slide — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN: "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "장표 재해석", "발표 스크립트", "발표자 노트", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".
+description: Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — reinterprets each slide's title/key-points/images/notes into web-native explanation slides (screenshots used only for interpretation, NOT embedded; variable height, not pixel-for-pixel), with left sidebar TOC, vertical scroll, images, tables, embedded/YouTube videos, speaker notes below each slide — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN: "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "장표 재해석", "발표 스크립트", "발표자 노트", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".
 ---
 
 # pptx-to-web
@@ -15,9 +15,10 @@ Pages에 게시한다.
 pip install -r scripts/requirements.txt   # python-pptx, PyMuPDF, soffice
 python3 scripts/pptx2web_native.py <input.pptx> --out docs --reflow --updates docs/updates.json
 ```
-- 각 슬라이드를 **스크린샷(PNG)** 으로 캡처 + 제목·핵심 포인트·발표 노트를 추출해
-  **웹에 맞게 재해석**한다(1:1 복제·고정 비율 X). 비어있는 장표는 노트로 설명을 채운다.
-- 좌측 큰 제목 + 핵심 bullet, 우측 슬라이드 캡처/영상, 아래 발표 스크립트. 높이 가변.
+- 슬라이드를 **스크린샷으로 보지 않고/넣지 않고**, 제목·핵심 포인트·실제 이미지·
+  발표 노트를 추출해 **순수 HTML 설명 슬라이드로 재구성**한다(1:1 복제·고정 비율 X).
+  스크린샷은 내용 해석 참고용일 뿐 최종 HTML에는 넣지 않는다. 비어있는 장표는 노트로 채움.
+- 좌측 큰 제목 + 핵심 bullet, 우측 슬라이드 내 실제 이미지/영상, 아래 발표 스크립트. 높이 가변.
 - 텍스트 선택·검색 가능, 슬라이드별 제목 자동 목차, 끝에 최신 업데이트 슬라이드.
 - 출력: `docs/index.html`, `docs/media/*`, `docs/deck.json`.
 

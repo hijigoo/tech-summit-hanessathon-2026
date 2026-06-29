@@ -246,31 +246,43 @@ def slide_points(s):
     return title, pts
 
 
+def slide_pictures(s, media):
+    out = []
+    for sh in s.shapes:
+        if sh.shape_type == MSO_SHAPE_TYPE.PICTURE:
+            try:
+                img = sh.image
+                name = f"img_{img.sha1[:10]}.{img.ext}"
+                (media/name).write_bytes(img.blob)
+                out.append(f"media/{name}")
+            except Exception:
+                pass
+    return out
+
+
 def build_reflow(pptx, out, scale, updates=None):
     out = Path(out); media = out/"media"
     for d in (out, media):
         d.mkdir(parents=True, exist_ok=True)
     for f in media.glob("*"):
         f.unlink()
-    n = render_pngs(pptx, media, scale)
     p = Presentation(pptx)
     onv = online_videos(pptx)
     cards = []
     for i, s in enumerate(p.slides):
         title, pts = slide_points(s)
-        note = slide_notes(s)
         cards.append({
             "n": i+1,
             "title": title or f"슬라이드 {i+1}",
             "points": pts,
-            "note": note,
-            "img": f"media/slide-{i+1:03d}.png" if n else "",
+            "note": slide_notes(s),
+            "imgs": slide_pictures(s, media),
             "videos": onv.get(i, []),
         })
     titles = [c["title"][:40] for c in cards]
     us, ut, _ = update_slides(updates)
-    for j, (h, t) in enumerate(zip(us, ut)):
-        cards.append({"n": len(cards)+1, "title": t, "html": h, "points": [], "note": "", "img": "", "videos": []})
+    for h, t in zip(us, ut):
+        cards.append({"n": len(cards)+1, "title": t, "html": h, "points": [], "note": "", "imgs": [], "videos": []})
         titles.append(t)
     deck = {"title": Path(pptx).stem, "cards": cards, "titles": titles}
     (out/"deck.json").write_text(json.dumps(deck, ensure_ascii=False))
@@ -299,8 +311,8 @@ section{scroll-snap-align:start;min-height:90vh;display:flex;flex-direction:colu
 ul{margin:0;padding:0;list-style:none}
 li{position:relative;padding:12px 0 12px 26px;font-size:clamp(16px,1.6vw,21px);line-height:1.6;border-bottom:1px solid rgba(255,255,255,.06)}
 li::before{content:"";position:absolute;left:0;top:20px;width:11px;height:11px;border-radius:3px;background:linear-gradient(135deg,var(--a),var(--b))}
-.shot{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.shot img{width:100%;display:block}
+.shot{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:10px;background:rgba(255,255,255,.04)}
+.shot img{width:100%;display:block;border-radius:10px}
 .vid iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px}
 .note{margin-top:22px;background:#0b1020;border:1px solid #1c2540;border-radius:14px;padding:16px 20px;color:#aebbd6;font-size:15px;line-height:1.7;white-space:pre-wrap}
 .note b{display:block;font-family:Poppins;font-size:12px;letter-spacing:.08em;color:#22d3ee;margin-bottom:6px}
@@ -316,7 +328,7 @@ dt.textContent=D.title;scrollEl=document.getElementById('scroll');toc=document.g
 D.cards.forEach((c,i)=>{const t=TH[i%TH.length];let body;
   if(c.html){body='<div class="html">'+c.html+'</div>';}
   else{const pts=c.points.map(x=>'<li>'+x.replace(/</g,'&lt;')+'</li>').join('');
-    const vis=c.videos&&c.videos.length?'<div class="vid"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.img?'<div class="shot"><img loading="lazy" src="'+c.img+'"></div>':'');
+    const vis=c.videos&&c.videos.length?'<div class="vid"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.imgs&&c.imgs.length?'<div class="shot">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');
     const solo=pts?'':' solo';body='<div class="row'+solo+'">'+(pts?'<ul>'+pts+'</ul>':'')+vis+'</div>';}
   scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" style="--a:'+t[0]+';--b:'+t[1]+'"><h2 class="t">'+(c.title||'').replace(/</g,'&lt;')+'</h2>'+body+'</section>');
   const sec=scrollEl.lastElementChild;const nd=document.createElement('div');nd.className='note'+(c.note?'':' empty');nd.innerHTML='<b>발표 스크립트</b>';const sp=document.createElement('span');sp.textContent=c.note||'';nd.appendChild(sp);sec.appendChild(nd);
