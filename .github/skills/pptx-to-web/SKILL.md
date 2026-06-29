@@ -5,10 +5,25 @@ description: Convert a PowerPoint (.pptx) into a colorful, content-based HTML we
 
 # pptx-to-web
 
-PPTX를 **콘텐츠 기반 웹사이트**로 변환한다. 스크린샷이 아니라 슬라이드 안의
-텍스트·이미지·표·영상을 추출해 진짜 HTML/CSS로 재구성한다. 결과는 왼쪽 목차
-사이드바 + 오른쪽 세로 스크롤(스냅) 형태의 컬러풀한 정적 사이트이며 GitHub
-Pages에 게시한다.
+PPTX를 **컬러풀한 콘텐츠 기반 웹사이트**로 변환한다. 모든 장표를 스크린샷으로
+캡처 → 에이전트가 직접 보고 → 박스·다이어그램·플로우로 재해석한 HTML 슬라이드로
+재구성한다. 왼쪽 목차 사이드바 + 오른쪽 1화면 랜드스케이프 스냅 스크롤, 발표자
+노트, 최신 Azure 업데이트 자동 추가 → GitHub Pages 배포. **이 스킬 하나로 완성**.
+
+## 한 번에 (요약)
+```bash
+pip install -r scripts/requirements.txt        # python-pptx, PyMuPDF (+soffice)
+python3 scripts/capture.py deck.pptx --out /tmp/shots   # ① PNG 캡처
+#   ② /tmp/shots/s01..png 를 view로 보고 content.json 작성(templates/ 참고)
+python3 scripts/fetch_updates.py --out docs/updates.json                       # ③ 최신 업데이트
+python3 scripts/pptx2web_native.py --content content.json --updates docs/updates.json --out docs  # ④ 빌드
+cd /tmp && npm i playwright && node <skill>/scripts/verify.js http://localhost:8765/             # ⑤ 검증
+git add docs && git commit && git push                                          # ⑥ Pages 배포
+```
+
+## 참고 템플릿 (templates/)
+- `content.template.json`: 모든 컴포넌트(.gr/.cd/.ic/.flow/.stat/.pill/.tag, SVG 도넛·허브) 예시.
+- `example-full.content.json`: 실제 23+6장 완성 덱. 새 덱은 이걸 베끼고 내용만 교체.
 
 ## 권장 워크플로우: 스크린샷 → AI 재해석 (content.json) ★ 핵심
 가장 완성도 높은 방식. PPTX 텍스트 추출에 의존하지 않고, **모든 슬라이드를
@@ -17,11 +32,9 @@ Pages에 게시한다.
 
 ### 1) 전체 장표 PNG 캡처
 ```bash
-brew install --cask libreoffice          # soffice 필요(없을 때만)
-pip install PyMuPDF                        # fitz
-soffice --headless --convert-to pdf <input.pptx> --outdir /tmp
-mkdir -p /tmp/shots
-python3 -c "import fitz;d=fitz.open('/tmp/<name>.pdf');[p.get_pixmap(dpi=110).save(f'/tmp/shots/s{i+1:02d}.png') for i,p in enumerate(d)]"
+brew install --cask libreoffice            # soffice 필요(없을 때만)
+pip install -r scripts/requirements.txt    # python-pptx, PyMuPDF
+python3 scripts/capture.py <input.pptx> --out /tmp/shots   # s01.png..sNN.png
 ```
 ### 2) PNG를 보고 ① 발표자 노트 작성 → ② 노트+스크린샷으로 HTML 작성
 3단계 파이프라인: **스크린샷 → 노트 → HTML**. 먼저 각 PNG를 view로 보고 그 장표를

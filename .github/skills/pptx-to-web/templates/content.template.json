@@ -1,0 +1,29 @@
+{
+  "title": "샘플 덱 제목",
+  "_doc": "참고 템플릿. 각 슬라이드는 {title,html,note} 또는 {title,divider:true,note}. html은 .gr/.cd/.ic/.flow/.stat/.pill/.tag + inline <svg> 사용. 그라데이션 id='h'(시안→퍼플) 재사용.",
+  "slides": [
+    { "title": "프레젠테이션 제목", "divider": true, "note": "표지·섹션·마무리는 divider. 큰 그라데이션 hero로 렌더." },
+
+    { "title": "카드 그리드 예시",
+      "html": "<p class='lead'>슬라이드 한 줄 요약(.lead).</p><div class='gr gr3'><div class='cd'><div class='ic'>🧩</div><h3>박스 A</h3><p>설명</p></div><div class='cd' style='--a:#3bb78f;--b:#22d3ee'><div class='ic'>🧠</div><h3>박스 B</h3><p>설명</p></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><div class='ic'>🚀</div><h3>박스 C</h3><p>설명</p></div></div>",
+      "note": "스크린샷을 보고 쓴 발표자 노트(2~3문장). 화면 아래 표시." },
+
+    { "title": "단계 플로우 예시",
+      "html": "<div class='flow'><div class='cd'><div class='ic'>1</div><h3>입력</h3></div><div class='cd' style='--a:#7b2ff7;--b:#ff5ea0'><div class='ic'>2</div><h3>처리</h3></div><div class='cd' style='--a:#ff5ea0;--b:#ff8a00'><div class='ic'>3</div><h3>출력</h3></div></div>",
+      "note": ".flow는 카드 사이에 화살표 자동." },
+
+    { "title": "도넛 + 통계 예시",
+      "html": "<div class='gr gr2' style='align-items:center'><svg viewBox='0 0 200 200' style='width:100%;max-height:40vh'><defs><linearGradient id='h' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#7b2ff7'/></linearGradient></defs><circle cx='100' cy='100' r='80' fill='none' stroke='#1c2540' stroke-width='22'/><circle cx='100' cy='100' r='80' fill='none' stroke='url(#h)' stroke-width='22' stroke-dasharray='301 502' stroke-linecap='round' transform='rotate(-90 100 100)'/><text x='100' y='110' fill='#fff' font-size='40' font-weight='800' text-anchor='middle'>60%</text></svg><div class='cd'><h3>핵심 수치</h3><p>도넛/막대/팬인 등 inline SVG로 시각화.</p></div></div>",
+      "note": "수치·구조·비교는 텍스트 대신 다이어그램." },
+
+    { "title": "허브-스포크 다이어그램",
+      "html": "<svg viewBox='0 0 700 320' style='width:100%;max-height:52vh'><defs><linearGradient id='h' x1='0' x2='1'><stop offset='0' stop-color='#22d3ee'/><stop offset='1' stop-color='#7b2ff7'/></linearGradient></defs><circle cx='350' cy='160' r='60' fill='url(#h)'/><text x='350' y='165' fill='#fff' font-size='14' font-weight='800' text-anchor='middle'>HUB</text><g font-size='13' fill='#dbe6ff' text-anchor='middle'><text x='350' y='40'>요소1</text><text x='600' y='160'>요소2</text><text x='350' y='300'>요소3</text><text x='105' y='160'>요소4</text></g></svg>",
+      "note": "중심 허브를 요소들이 둘러싸는 구조." },
+
+    { "title": "키워드·배지 예시",
+      "html": "<p class='lead'>알약/배지로 키워드 강조.</p><div><span class='pill'>OpenAI</span><span class='pill'>Llama</span><span class='pill'>Mistral</span> <span class='tag'>NEW</span></div>",
+      "note": ".pill 키워드, .tag NEW 배지." },
+
+    { "title": "감사합니다", "divider": true, "note": "마무리." }
+  ]
+}
