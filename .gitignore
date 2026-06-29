@@ -1,0 +1,10 @@
+# OS
+.DS_Store
+# Source PPTX (heavy, not needed in repo)
+*.pptx
+sample-pptx/media/
+# scratch / demo
+demo/
+node_modules/
+__pycache__/
+*.pyc
