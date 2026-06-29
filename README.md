@@ -1,4 +1,4 @@
-# pptx-to-web — 발표가 끝나도 늙지 않는 PPT. 말 한마디로 갱신되는 라이브 웹 데모
+# 발표가 끝나도 늙지 않는 PPT — 말 한마디로 갱신되는 라이브 웹 데모를 만드는 Copilot Skill
 
 > 하네스톤 2026 · **트랙2** · 제출물: **Copilot Skill** (`skills/pptx-to-web/`)
 
