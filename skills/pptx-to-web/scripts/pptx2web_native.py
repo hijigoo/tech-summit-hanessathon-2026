@@ -323,7 +323,7 @@ def build_content(content_path, out, updates=None):
                           "points": [], "note": s.get("note",""), "imgs": [], "videos": []})
         else:
             cards.append({"n": i+1, "title": s.get("title",""), "html": s.get("html",""),
-                          "points": [], "note": s.get("note",""), "imgs": [], "videos": []})
+                          "points": [], "note": s.get("note",""), "imgs": s.get("imgs",[]), "videos": s.get("videos",[])})
         titles.append((s.get("title") or "섹션")[:40])
     us, ut, _ = update_slides(updates)
     for h, t in zip(us, ut):
@@ -408,7 +408,7 @@ dt.textContent=D.title;scrollEl=document.getElementById('scroll');toc=document.g
 D.cards.forEach((c,i)=>{const t=TH[i%TH.length];let body;
   if(c.divider){scrollEl.insertAdjacentHTML('beforeend','<section id="s'+i+'" class="divider" style="--a:'+t[0]+';--b:'+t[1]+'"><div class="dvr"><span>SECTION</span><h2>'+(c.title||'').replace(/</g,'&lt;')+'</h2></div></section>');
     toc.insertAdjacentHTML('beforeend','<a href="#s'+i+'"><b>'+(i+1).toString().padStart(2,'0')+'</b><span>'+((D.titles[i]||'섹션')).replace(/</g,'&lt;')+'</span></a>');return;}
-  if(c.html){body='<div class="html">'+c.html+'</div>';}
+  if(c.html){const ex=(c.videos&&c.videos.length?'<div class="vid">'+c.videos.map(v=>'<iframe src="'+v+'" allow="autoplay;encrypted-media" allowfullscreen></iframe>').join('')+'</div>':'')+(c.imgs&&c.imgs.length?'<div class="shot">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');body='<div class="html">'+c.html+'</div>'+ex;}
   else{const pts=c.points.map((x,k)=>'<li>'+x.replace(/</g,'&lt;')+'</li>').join('');
     const cols=c.points.length>7?' cols':'';
     const vis=c.videos&&c.videos.length?'<div class="vid"><iframe src="'+c.videos[0]+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>':(c.imgs&&c.imgs.length?'<div class="shot">'+c.imgs.map(s=>'<img loading="lazy" src="'+s+'">').join('')+'</div>':'');

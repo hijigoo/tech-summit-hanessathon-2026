@@ -1,6 +1,6 @@
 ---
 name: pptx-to-web
-description: 'Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — reinterprets each slide title/key-points/images/notes into web-native explanation slides (screenshots used only for interpretation, NOT embedded; variable height, not pixel-for-pixel), with left sidebar TOC, vertical scroll, images, tables, embedded/YouTube videos, speaker notes below each slide — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN — "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "장표 재해석", "발표 스크립트", "발표자 노트", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".'
+description: 'Convert a PowerPoint (.pptx) into a colorful, content-based HTML website — reinterprets each slide title/key-points/images/notes into web-native explanation slides (full-slide captures used only for interpretation, but real content screenshots like product UI/demos/charts are embedded as-is; variable height, not pixel-for-pixel), with left sidebar TOC, vertical scroll, images, tables, embedded/YouTube videos, speaker notes below each slide — and append the latest Azure/Foundry official updates, then deploy to GitHub Pages. WHEN — "pptx to web", "파워포인트 웹으로", "ppt를 html로", "발표자료 웹버전", "장표 재해석", "발표 스크립트", "발표자 노트", "최신 업데이트 반영", "deploy slides to pages", "pptx html 변환".'
 ---
 
 # pptx-to-web
@@ -45,14 +45,16 @@ python3 scripts/capture.py <input.pptx> --out /tmp/shots   # s01.png..sNN.png
 ```json
 {"title":"덱 제목","slides":[
   {"title":"표지","divider":true,"note":"발표 스크립트"},
-  {"title":"슬라이드 제목","html":"<p class='lead'>요약</p><div class='gr gr3'>…</div>","note":"화면을 설명하는 발표자 노트"}
+  {"title":"슬라이드 제목","html":"<p class='lead'>요약</p><div class='gr gr3'>…</div>","note":"화면을 설명하는 발표자 노트"},
+  {"title":"제품 데모 화면","html":"<p class='lead'>실제 UI는 그대로 보여준다</p>","imgs":["media/demo1.png"],"note":"스크린샷이 있으면 imgs로 임베드"}
 ]}
 ```
 - **note 먼저**: 스크린샷을 보고 실제 발표자가 말할 **구체적 스크립트**를 쓴다. 단순 한 줄 요약 금지.
   - ① 도입(이 장표가 왜 중요한지) → ② 핵심 포인트 2~3개를 수치·예시와 함께 설명 → ③ 다음 장 연결.
   - 화면에 보이는 숫자·고유명사·관계를 **구체적으로 언급**(예: "1,404개 도구", "GPT-4.1-nano로 라우팅").
   - 청중이 노트만 읽어도 발표가 되도록 4~6문장, 친근한 구어체. 빈 노트·"이 장표는 X입니다" 식 금지.
-- **html 다음**: 그 노트가 말하는 구조를 깔끔한 카드/플로우로 재현(스크린샷 임베드 X, 1:1 복제 X).
+- **html 다음**: 그 노트가 말하는 구조를 깔끔한 카드/플로우로 재현(슬라이드 전체 캡처 임베드 X, 1:1 복제 X).
+  - **단, 설명용 콘텐츠 스크린샷은 그대로 사용**: 슬라이드 안에 제품 UI·데모 화면·실제 차트/그래프·코드처럼 재현 불가한 시각 자료가 있으면, 그 이미지는 추출해 `imgs`로 임베드해 그대로 활용한다(`media/`에 저장). "장표 통째 스크린샷"만 금지이고, 본문의 실제 이미지는 보존이 원칙.
 - **divider**: 섹션 표지/타이틀/마무리 → 그라데이션 hero.
 
 > **완전성 원칙(누락 금지)**: 원본 슬라이드의 텍스트는 요약으로 날리지 말고 **빠짐없이** 옮긴다.
@@ -95,7 +97,7 @@ python3 scripts/pptx2web_native.py <input.pptx> --out docs --reflow --updates do
 ```
 - 슬라이드를 **스크린샷으로 보지 않고/넣지 않고**, 제목·핵심 포인트·실제 이미지·
   발표 노트를 추출해 **순수 HTML 설명 슬라이드로 재구성**한다(1:1 복제·고정 비율 X).
-  스크린샷은 내용 해석 참고용일 뿐 최종 HTML에는 넣지 않는다. 비어있는 장표는 노트로 채움.
+  장표 전체 캡처는 해석 참고용일 뿐 넣지 않지만, **슬라이드 안의 설명용 콘텐츠 이미지(제품 UI·데모·차트)는 추출해 그대로 임베드**한다. 비어있는 장표는 노트로 채움.
 - 좌측 큰 제목 + 핵심 bullet, 우측 슬라이드 내 실제 이미지/영상, 아래 발표 스크립트. 높이 가변.
 - 텍스트 선택·검색 가능, 슬라이드별 제목 자동 목차, 끝에 최신 업데이트 슬라이드.
 - 출력: `docs/index.html`, `docs/media/*`, `docs/deck.json`.
